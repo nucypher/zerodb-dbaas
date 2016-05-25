@@ -1,0 +1,35 @@
+First terminal
+--------------
+git clone git@github.com:zerodb/zerodb-server
+cd zerodb-server
+virtualenv-3.5 .
+
+./bin/pip install -e .
+
+./bin/zerodb-manage init_db \
+	--username=root \
+	--passphrase=123 \
+	--sock=localhost:8001
+
+./bin/zerodb-server
+
+Second terminal
+---------------
+git clone git@github.com:zerodb/zerodb-dbaas
+cd zerodb-dbaas
+virtualenv-3.5 .
+
+./bin/pip install -e .
+
+./bin/pserve development.ini
+
+Browser
+-------
+http://localhost:6543
+
+The app itself is a simple counter. It however shows that
+
+    a) Pyramid is connected to ZeroDB
+    b) Transactions work
+    c) Persistence works
+
