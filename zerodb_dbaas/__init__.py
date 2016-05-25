@@ -8,7 +8,7 @@ from .models import make_app
 def make_db(config):
     # TODO: Read config settings
     zodb_dbs = config.registry._zodb_databases = {}
-    zodb_dbs[''] = db = DB(('localhost', 8001), username='admin', password='123')
+    zodb_dbs[''] = db = DB(('localhost', 8001), username='root', password='123')
     return db
 
 
