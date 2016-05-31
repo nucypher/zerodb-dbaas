@@ -52,5 +52,9 @@ def main(global_config, **settings):
     config.add_route('home', '/')
     config.add_route('count_json', '/count.json')
 
+    config.add_route('_add_user', '/_add_user')
+    config.add_route('_del_user', '/_del_user')
+    config.add_route('_edit_user', '/_edit_user')
+
     config.scan()
     return config.make_wsgi_app()
