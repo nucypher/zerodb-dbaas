@@ -12,8 +12,11 @@ def make_db(config):
 
     db = config.registry.settings.get('testdb', None)
     if db is None:
-        # TODO: Read config settings
-        db = DB(('localhost', 8001), username='root', password='123')
+        sock = config.registry.settings.get('zerodb.sock')
+        sock = tuple(sock.split(':'))   # TODO: Parse for real
+        username = config.registry.settings.get('zerodb.username')
+        password = config.registry.settings.get('zerodb.password')
+        db = DB(sock, username=username, password=password)
 
     zodb_dbs[''] = db
     return db
