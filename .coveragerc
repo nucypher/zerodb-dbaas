@@ -1,0 +1,3 @@
+[run]
+source = zerodb_dbaas
+omit = zerodb_dbaas/test*
