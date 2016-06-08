@@ -33,3 +33,19 @@ The app itself is a simple counter. It however shows that
     b) Transactions work
     c) Persistence works
 
+Running tests
+-------------
+git clone git@github.com:zerodb/zerodb
+cd zerodb
+git checkout stefan-testing
+cd ..
+
+git clone git@github.com:zerodb/zerodb-dbaas
+cd zerodb-dbaas
+virtualenv-3.5 .
+
+./bin/pip install -e ../zerodb
+./bin/pip install -e ".[testing]"
+
+./bin/py.test
+
