@@ -1,3 +1,5 @@
+from ZODB.POSException import ConflictError
+
 from pyramid.view import view_config
 from .models import Counter
 
@@ -38,6 +40,8 @@ def add_user(request):
 
         db._storage.add_user(username, passphrase)
 
+    except ConflictError:
+        raise
     except Exception as e:
         return {'ok': 0, 'error': str(e), 'error_type': e.__class__.__name__}
 
@@ -61,6 +65,8 @@ def del_user(request):
 
         db._storage.del_user(username)
 
+    except ConflictError:
+        raise
     except Exception as e:
         return {'ok': 0, 'error': str(e), 'error_type': e.__class__.__name__}
 
@@ -85,6 +91,8 @@ def edit_user(request):
 
         db._storage.change_key(username, passphrase)
 
+    except ConflictError:
+        raise
     except Exception as e:
         return {'ok': 0, 'error': str(e), 'error_type': e.__class__.__name__}
 
