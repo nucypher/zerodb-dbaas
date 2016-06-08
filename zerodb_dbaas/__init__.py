@@ -6,18 +6,24 @@ from .models import make_app
 
 
 def make_db(config):
-    # TODO: Read config settings
-    zodb_dbs = config.registry._zodb_databases = {}
-    zodb_dbs[''] = db = DB(('localhost', 8001), username='root', password='123')
+    zodb_dbs = getattr(config.registry, '_zodb_databases', None)
+    if zodb_dbs is None:
+        zodb_dbs = config.registry._zodb_databases = {}
+
+    db = config.registry.settings.get('testdb', None)
+    if db is None:
+        # TODO: Read config settings
+        db = DB(('localhost', 8001), username='root', password='123')
+
+    zodb_dbs[''] = db
     return db
 
 
 def get_connection(request, dbname=None):
     # Cribbed from pyramid_zodbconn
-    registry = request.registry
     primary_conn = getattr(request, '_primary_zodb_conn', None)
     if primary_conn is None:
-        zodb_dbs = getattr(registry, '_zodb_databases', None)
+        zodb_dbs = getattr(request.registry, '_zodb_databases', None)
         if zodb_dbs is None:
             raise ConfigurationError('pyramid_zodbconn not included in configuration')
         primary_db = zodb_dbs.get('')
@@ -45,7 +51,6 @@ def main(global_config, **settings):
     config.include('pyramid_chameleon')
     config.include('pyramid_tm')
 
-    make_db(config)
     config.add_request_method(session_factory, 'dbsession', reify=True)
 
     config.add_static_view('static', 'static', cache_max_age=3600)
@@ -57,4 +62,9 @@ def main(global_config, **settings):
     config.add_route('_edit_user', '/_edit_user')
 
     config.scan()
+    config.commit()
+
+    # Connect on startup
+    make_db(config)
+
     return config.make_wsgi_app()
