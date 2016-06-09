@@ -1,4 +1,5 @@
 from ZODB.POSException import ConflictError
+from zerodb.crypto import ecc
 
 from pyramid.view import view_config
 from .models import Counter
@@ -38,7 +39,8 @@ def add_user(request):
         if not (username and passphrase):
             raise ValidationError('Username and passphrase are required')
 
-        db._storage.add_user(username, passphrase)
+        pubkey = ecc.private(passphrase).get_pubkey()
+        db._storage.add_user(username, pubkey)
 
     except ConflictError:
         raise
@@ -89,7 +91,8 @@ def edit_user(request):
         if not (username and passphrase):
             raise ValidationError('Username and passphrase are required')
 
-        db._storage.change_key(username, passphrase)
+        pubkey = ecc.private(passphrase).get_pubkey()
+        db._storage.change_key(username, pubkey)
 
     except ConflictError:
         raise
