@@ -5,18 +5,30 @@ from zerodb import DB
 from .models import make_app
 
 
+def parse_socket(sock):
+    if sock and sock[0] != '/':
+        if ':' not in sock:
+            raise ConfigurationError('Invalid zerodb.sock format in Pyramid settings')
+        sock = sock.rsplit(':', 1)
+        sock = (str(sock[0]), int(sock[1], 10))
+    return sock
+
+
 def make_db(config):
     zodb_dbs = getattr(config.registry, '_zodb_databases', None)
     if zodb_dbs is None:
         zodb_dbs = config.registry._zodb_databases = {}
 
-    db = config.registry.settings.get('testdb', None)
-    if db is None:
-        sock = config.registry.settings.get('zerodb.sock')
-        sock = tuple(sock.split(':'))   # TODO: Parse for real
-        username = config.registry.settings.get('zerodb.username')
-        password = config.registry.settings.get('zerodb.password')
-        db = DB(sock, username=username, password=password)
+    sock = config.registry.settings.get('zerodb.sock')
+    username = config.registry.settings.get('zerodb.username')
+    password = config.registry.settings.get('zerodb.password')
+
+    if sock is None:
+        db = config.registry.settings.get('testdb') # Testing
+        if db is None:
+            raise ConfigurationError('No zerodb.sock defined in Pyramid settings')
+    else:
+        db = DB(parse_socket(sock), username=username, password=password)
 
     zodb_dbs[''] = db
     return db

@@ -29,8 +29,7 @@ class ModelTests(unittest.TestCase):
         self.assertEqual(len(db[Counter]), 3)
 
 
-@pytest.mark.usefixtures('testdb')
-@pytest.mark.usefixtures('pyramid')
+@pytest.mark.usefixtures('pyramid', 'testdb')
 class ViewTests(unittest.TestCase):
 
     def test_my_view_1(self):
@@ -48,33 +47,6 @@ class ViewTests(unittest.TestCase):
         info = my_view(request)
         self.assertEqual(info['project'], 'zerodb-dbaas')
         self.assertEqual(info['count'], 1)
-
-    def test_add_user_html(self):
-        from zerodb_dbaas.views import add_user
-        request = DummyRequest(
-            content_type='multipart/form-data',
-            params=dict(username='wilma', passphrase='secret'),
-            dbsession=self.testdb)
-        info = add_user(request)
-        self.assertEqual(info['ok'], 1, info)
-
-    def _test_add_user_json(self):
-        from zerodb_dbaas.views import add_user
-        request = DummyRequest(
-            content_type='application/json',
-            json_body=dict(username='wilma', passphrase='secret'),
-            dbsession=self.testdb)
-        info = add_user(request)
-        self.assertEqual(info['ok'], 1, info)
-
-    def _test_del_user(self):
-        from zerodb_dbaas.views import del_user
-        request = DummyRequest(
-            content_type='multipart/form-data',
-            params=dict(username='wilma'),
-            dbsession=self.testdb)
-        info = del_user(request)
-        self.assertEqual(info['ok'], 1, info)
 
 
 @pytest.mark.usefixtures('testapp')
