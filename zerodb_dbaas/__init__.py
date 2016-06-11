@@ -6,11 +6,14 @@ from .models import make_app
 
 
 def parse_socket(sock):
-    if sock and sock[0] != '/':
-        if ':' not in sock:
-            raise ConfigurationError('Invalid zerodb.sock format in Pyramid settings')
-        sock = sock.rsplit(':', 1)
-        sock = (str(sock[0]), int(sock[1], 10))
+    if not sock:
+        return None
+    if sock[0] == '/':
+        return str(sock)
+    if ':' not in sock:
+        return None
+    sock = sock.rsplit(':', 1)
+    sock = (str(sock[0]), int(sock[1], 10))
     return sock
 
 
@@ -28,7 +31,14 @@ def make_db(config):
         if db is None:
             raise ConfigurationError('No zerodb.sock defined in Pyramid settings')
     else:
-        db = DB(parse_socket(sock), username=username, password=password)
+        sock = parse_socket(sock)
+        if sock is None:
+            raise ConfigurationError('Invalid zerodb.sock format in Pyramid settings')
+        if username is None:
+            raise ConfigurationError('No zerodb.username defined in Pyramid settings')
+        if password is None:
+            raise ConfigurationError('No zerodb.password defined in Pyramid settings')
+        db = DB(sock, username=username, password=password)
 
     zodb_dbs[''] = db
     return db
@@ -40,19 +50,13 @@ def get_connection(request, dbname=None):
     if primary_conn is None:
         zodb_dbs = getattr(request.registry, '_zodb_databases', None)
         if zodb_dbs is None:
-            raise ConfigurationError('pyramid_zodbconn not included in configuration')
+            raise ConfigurationError('No zerodb database configured')
         primary_db = zodb_dbs.get('')
         if primary_db is None:
-            raise ConfigurationError('No zodbconn.uri defined in Pyramid settings')
+            raise ConfigurationError('Error connecting to zerodb database')
         primary_conn = primary_db
         request._primary_zodb_conn = primary_conn
-    if dbname is None:
-        return primary_conn
-    try:
-        conn = primary_conn.get_connection(dbname)
-    except KeyError:
-        raise ConfigurationError('No zodbconn.uri.%s defined in Pyramid settings' % dbname)
-    return conn
+    return primary_conn
 
 
 def session_factory(request):
