@@ -31,11 +31,31 @@ def test_del_user_html(pyramid, testdb):
     assert info['ok'] == 1, info
 
 
-def _test_add_user_json(pyramid, testdb):
+def test_add_user_json(pyramid, testdb):
     from zerodb_dbaas.views import add_user
     request = DummyRequest(
         content_type='application/json',
-        json_body=dict(username='wilma', passphrase='secret'),
+        json_body=dict(username='betty', passphrase='secret'),
         dbsession=testdb)
     info = add_user(request)
+    assert info['ok'] == 1, info
+
+
+def test_change_key_json(pyramid, testdb):
+    from zerodb_dbaas.views import edit_user
+    request = DummyRequest(
+        content_type='application/json',
+        json_body=dict(username='betty', passphrase='more secret'),
+        dbsession=testdb)
+    info = edit_user(request)
+    assert info['ok'] == 1, info
+
+
+def test_del_user_json(pyramid, testdb):
+    from zerodb_dbaas.views import del_user
+    request = DummyRequest(
+        content_type='application/json',
+        json_body=dict(username='betty',),
+        dbsession=testdb)
+    info = del_user(request)
     assert info['ok'] == 1, info
