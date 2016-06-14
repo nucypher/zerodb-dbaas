@@ -53,7 +53,7 @@ class ViewTests(unittest.TestCase):
 class FunctionalTests(unittest.TestCase):
 
     def test_home(self):
-        res = self.testapp.get('/', status=200)
+        res = self.testapp.get('/count', status=200)
         self.assertEqual(res.content_type, 'text/html')
         self.assertTrue(b'zerodb-dbaas' in res.body)
 

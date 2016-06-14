@@ -8,7 +8,7 @@ class ValidationError(Exception):
     pass
 
 
-@view_config(route_name='home', renderer='templates/index.pt')
+@view_config(route_name='count', renderer='templates/count.pt')
 @view_config(route_name='count_json', renderer='json')
 def my_view(request):
     db = request.dbsession
