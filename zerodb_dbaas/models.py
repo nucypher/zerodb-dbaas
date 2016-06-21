@@ -20,3 +20,15 @@ def make_app(db):
         import transaction
         transaction.commit()
     return db
+
+
+class UserRegistration(Model):
+    username = Field()
+    email = Field()
+    password = Field()
+    created = Field()
+    completed = Field()
+    hashcode = Field()
+
+    def __repr__(self):
+        return "<UserRegistration %s>" % (self.username,)

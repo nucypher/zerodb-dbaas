@@ -17,6 +17,7 @@ requires = [
     'pyramid_tm',
     'zerodb',
     'waitress',
+    'six',
     ]
 
 tests_require = [

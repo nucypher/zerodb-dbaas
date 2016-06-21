@@ -80,6 +80,19 @@ def main(global_config, **settings):
     config.add_route('_del_user', '/_del_user')
     config.add_route('_edit_user', '/_edit_user')
 
+    config.add_static_view('assets', 'assets', cache_max_age=3600)
+    config.add_route('home', '/')
+    config.add_route('login', '/login')
+    config.add_route('register', '/register')
+    config.add_route('register-email', '/register-email')
+    config.add_route('register-confirm', '/register-confirm')
+    config.add_route('register-success', '/register-success')
+
+    config.add_route('_register', '/_register')
+    config.add_route('_register_confirm', '/_register_confirm')
+
+    config.add_route('registrations', '/registrations')
+
     config.scan()
     config.commit()
 
