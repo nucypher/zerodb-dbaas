@@ -1,0 +1,30 @@
+<html lang="en" metal:use-macro="master">
+
+		<title metal:fill-slot="title">
+
+			Registration Failed
+
+		</title>
+
+		<div class="container" metal:fill-slot="container">
+			<div class="row">
+				<div class="col-sm-4">
+				</div>
+				<div class="col-sm-4">
+					<h1>Registration Failed</h1>
+					<hr class="m-t">
+
+						<form>
+							<div class="form-group" tal:condition="error|None">
+								${error_type}: ${error}
+							</div>
+							You may want to <a href="${request.route_url('register')}">try to sign up again</a>
+			      </form>
+
+				</div>
+				<div class="col-sm-4">
+				</div>
+			</div>
+		</div>
+
+</html>

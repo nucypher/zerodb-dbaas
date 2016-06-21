@@ -1,0 +1,182 @@
+<html lang="en" metal:use-macro="master">
+	<head>
+		<meta charset="utf-8">
+		<meta http-equiv="X-UA-Compatible" content="IE=edge">
+		<meta name="viewport" content="width=device-width, initial-scale=1">
+		<meta name="description" content="">
+		<meta name="keywords" content="">
+		<meta name="author" content="">
+
+		<title metal:fill-slot="title">
+
+			Overview
+
+		</title>
+
+		<link href="http://fonts.googleapis.com/css?family=Roboto:300,400,500,700,400italic" rel="stylesheet">
+
+		<link href="assets/css/toolkit-inverse.css" rel="stylesheet">
+
+
+		<link href="assets/css/application.css" rel="stylesheet">
+
+		<style>
+/* note: this is a hack for ios iframe for bootstrap themes shopify page */
+/* this chunk of css is not part of the toolkit :) */
+body {
+	width: 1px;
+	min-width: 100%;
+	*width: 100%;
+}
+		</style>
+	</head>
+
+
+	<body>
+		<div class="container" metal:fill-slot="container">
+			<div class="row">
+				<div class="col-sm-3 sidebar">
+					<nav class="sidebar-nav">
+						<div class="sidebar-header">
+							<button class="nav-toggler nav-toggler-sm sidebar-toggler" type="button" data-toggle="collapse" data-target="#nav-toggleable-sm">
+								<span class="sr-only">Toggle nav</span>
+							</button>
+							<a class="sidebar-brand img-responsive" href="index.html">
+								<span class="icon icon-lock sidebar-brand-icon">ZeroDB</span>
+							</a>
+						</div>
+
+						<div class="collapse nav-toggleable-sm" id="nav-toggleable-sm">
+							<form class="sidebar-form">
+								<input class="form-control" type="text" placeholder="Search...">
+								<button type="submit" class="btn-link">
+									<span class="icon icon-magnifying-glass"></span>
+								</button>
+							</form>
+							<ul class="nav nav-pills nav-stacked">
+								<li class="nav-header">Dashboards</li>
+								<li class="active">
+									<a href="index.html">Overview</a>
+								</li>
+								<li > <a href="docs/index.html">Documentation</a> </li>
+								<li >
+									<a href="billing-history/index.html">Billing history</a>
+								</li>
+							</ul>
+							<hr class="visible-xs m-t">
+						</div>
+					</nav>
+				</div>
+				<div class="col-sm-9 content">
+					<div class="dashhead">
+						<div class="dashhead-titles">
+							<h6 class="dashhead-subtitle">Dashboards</h6>
+							<h2 class="dashhead-title">Overview</h2>
+						</div>
+
+						<div class="btn-toolbar dashhead-toolbar">
+							<button id="stripeButton" type="button" class="btn btn-lg btn-pill btn-primary"><span class="icon icon-database"> Launch instance</span></button>
+						</div>
+					</div>
+
+					<hr class="m-t">
+
+					<div class="list-group">
+						<h4 class="list-group-header">
+							Deployments
+						</h4>
+
+						<a class="list-group-item" href="instance/index.html">
+							<span class="pull-right text-muted">20GB</span>
+							<span class="icon icon-check"> Instance #1
+						</a>
+
+						<a class="list-group-item" href="instance/index.html">
+							<span class="pull-right text-muted">20GB</span>
+							<span class="icon icon-check"> Instance #2
+						</a>
+
+						<a class="list-group-item" href="instance/index.html">
+							<span class="pull-right text-muted">20GB</span>
+							<span class="icon icon-cross"> Instance #3
+						</a>
+
+						<a class="list-group-item" href="instance/index.html">
+							<span class="pull-right text-muted">20GB</span>
+							<span class="icon icon-cross"> Instance #4
+						</a>
+
+						<a class="list-group-item" href="instance/index.html">
+							<span class="pull-right text-muted">20GB</span>
+							<span class="icon icon-check"> Instance #5
+						</a>
+
+					</div>
+					<a href="#" class="btn btn-primary-outline p-x">View all deployments</a>
+				</div>
+			</div>
+		</div>
+
+		<metal:slot fill-slot="extra">
+			<div id="docsModal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+				<div class="modal-dialog">
+					<div class="modal-content">
+
+						<div class="modal-header">
+							<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+							<h4 class="modal-title" id="myModalLabel">Example modal</h4>
+						</div>
+						<div class="modal-body">
+							<p>You're looking at an example modal in the dashboard theme.</p>
+						</div>
+						<div class="modal-footer">
+							<button type="button" class="btn btn-primary" data-dismiss="modal">Cool, got it!</button>
+						</div>
+					</div>
+				</div>
+			</div>
+		</metal:slot>
+
+		<script src="assets/js/jquery.min.js"></script>
+		<script src="assets/js/chart.js"></script>
+		<script src="assets/js/tablesorter.min.js"></script>
+		<script src="assets/js/toolkit.js"></script>
+		<script src="assets/js/application.js"></script>
+		<script>
+// execute/clear BS loaders for docs
+$(function(){while(window.BS&&window.BS.loader&&window.BS.loader.length){(window.BS.loader.pop())()}})
+		</script>
+
+		<metal:slot fill-slot="scripts">
+			<script src="https://checkout.stripe.com/checkout.js"></script>
+			<script>
+				var handler = StripeCheckout.configure({
+					key: 'pk_test_a5PvmhImTHCrmhz852eOWS6l',
+					image: '../assets/img/zerodb.svg',
+					locale: 'auto',
+					token: function(token) {
+						// You can access the token ID with `token.id`.
+						// Get the token ID to your server-side code for use.
+					}
+				});
+
+				$('#stripeButton').on('click', function(e) {
+					// Open Checkout with further options:
+					handler.open({
+						name: 'ZeroDB, Inc.',
+						description: '1 database instance',
+						zipCode: true,
+						amount: 200
+					});
+					e.preventDefault();
+				});
+
+				// Close Checkout on page navigation:
+				$(window).on('popstate', function() {
+					handler.close();
+				});
+			</script>
+		</metal:slot>
+
+	</body>
+</html>

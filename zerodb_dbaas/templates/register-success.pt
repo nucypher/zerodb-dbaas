@@ -1,0 +1,43 @@
+<html lang="en" metal:use-macro="master">
+
+		<title metal:fill-slot="title">
+
+			Registration Complete
+
+		</title>
+
+		<div class="container" metal:fill-slot="container">
+			<div class="row">
+				<div class="col-sm-4">
+				</div>
+				<div class="col-sm-4">
+					<h1>Registration Complete</h1>
+					<hr class="m-t">
+
+					<p>Welcome to ZeroDB! Please log in to your new account:
+
+						<form method="post">
+							<div class="form-group" tal:condition="error|None">
+								${error_type}: ${error}
+							</div>
+			        <div class="form-group">
+			          <label for="inputAccount">Account Name</label>
+			          <input type="text" class="form-control" id="inputAccount" name="inputAccount" placeholder="Account Name" />
+			        </div>
+			        <div class="form-group">
+			          <label for="inputPassword">Password</label>
+			          <input type="password" class="form-control" id="inputPassword" name="inputPassword" placeholder="Password" />
+			        </div>
+			        <div class="form-group">
+			          <button type="submit" class="btn btn-default">Login</button>
+			        </div>
+							Forgot your <a href="#">username</a> or <a href="#">password</a>?
+			      </form>
+
+				</div>
+				<div class="col-sm-4">
+				</div>
+			</div>
+		</div>
+
+</html>
