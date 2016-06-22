@@ -57,7 +57,7 @@ def test_register_happy_path_json(testapp):
     response = testapp.post_json('/_register', form)
     assert response.status_code == 200
     assert response.content_type == 'application/json'
-    assert response.json_body.get('ok', 0) == 1, response.json_body
+    assert response.json_body.get('ok') == 1, response.json_body
     assert response.json_body.get('hashcode')
 
     # Call _register_confirm API
@@ -68,3 +68,19 @@ def test_register_happy_path_json(testapp):
     assert response.status_code == 200
     assert response.content_type == 'application/json'
     assert response.json_body.get('ok', 0) == 1, response.json_body
+
+    # Account is no longer available
+    response = testapp.post_json('/_account_available', form)
+    assert response.status_code == 200
+    assert response.content_type == 'application/json'
+    assert response.json_body.get('ok') == 0, response.json_body
+
+
+def test_account_available(testapp):
+    form = dict(
+        inputAccount='wilma',
+    )
+    response = testapp.post_json('/_account_available', form)
+    assert response.status_code == 200
+    assert response.content_type == 'application/json'
+    assert response.json_body.get('ok') == 1, response.json_body

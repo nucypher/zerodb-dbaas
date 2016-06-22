@@ -90,6 +90,7 @@ def main(global_config, **settings):
 
     config.add_route('_register', '/_register')
     config.add_route('_register_confirm', '/_register_confirm')
+    config.add_route('_account_available', '/_account_available')
 
     config.add_route('registrations', '/registrations')
 

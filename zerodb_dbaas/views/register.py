@@ -201,6 +201,35 @@ def register_success(request):
     return {'ok': 0}
 
 
+@view_config(route_name='_account_available', renderer='json')
+def account_available(request):
+    """Check availability of username/email"""
+    db = request.dbsession
+    form = request.json_body
+
+    username = form.get('inputAccount')
+    email = form.get('inputEmail')
+
+    try:
+        if not (username or email):
+            raise ValidationError('Account name or email are required')
+
+        if username:
+            user = db[UserRegistration].query(username=username)
+            if user:
+                raise ValidationError('Account name is already in use')
+
+        if email:
+            user = db[UserRegistration].query(email=email)
+            if user:
+                raise ValidationError('Email address is already in use')
+
+    except ValidationError as e:
+        return {'ok': 0, 'error': str(e), 'error_type': e.__class__.__name__}
+
+    return {'ok': 1}
+
+
 @view_config(route_name='registrations', renderer='zerodb_dbaas:templates/registrations.pt')
 def registrations(request):
     """Show pending registrations"""
