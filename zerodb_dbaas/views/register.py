@@ -134,7 +134,7 @@ def register(request):
             email=email,
             pubkey=pubkey,
             created=now,
-            completed=datetime(1970, 1, 1),
+            activated=datetime(1970, 1, 1),
             hashcode=hashcode)
 
         db.add(newUser)
@@ -191,10 +191,10 @@ def register_confirm(request):
         if user.created + timedelta(days=14) < now:
             raise ValidationError('Registration code has expired')
 
-        if user.completed > datetime(1970, 1, 1):
+        if user.activated > datetime(1970, 1, 1):
             raise ValidationError('Registration code has already been used')
 
-        user.completed = now
+        user.activated = now
         db._storage.add_user(user.email, user.pubkey)
 
         if request.content_type == 'application/json':
@@ -243,7 +243,7 @@ def registrations(request):
     db = request.dbsession
 
     users = db[UserRegistration].query(
-        completed=datetime(1970, 1, 1),
+        activated=datetime(1970, 1, 1),
         sort_index='created',
         reverse=True,
         limit=10)

@@ -23,10 +23,10 @@ def make_app(db):
 
 
 class UserRegistration(Model):
-    email = Field()
-    created = Field()
-    completed = Field()
-    hashcode = Field()
+    email = Field()     # str
+    created = Field()   # datetime
+    activated = Field() # datetime
+    hashcode = Field()  # str
 
     def __repr__(self):
         return "<UserRegistration %s>" % (self.username,)
