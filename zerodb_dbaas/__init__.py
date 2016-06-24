@@ -2,9 +2,24 @@ from pyramid.authentication import AuthTktAuthenticationPolicy
 from pyramid.authorization import ACLAuthorizationPolicy
 from pyramid.config import Configurator
 from pyramid.exceptions import ConfigurationError
+from pyramid.settings import asbool
 
 from zerodb import DB
 from .models import make_app
+
+default_settings = [
+#    ('example_bool_setting', asbool, false),
+]
+
+
+def parse_settings(settings):
+    parsed = {}
+    for name, convert, default in default_settings:
+        value = settings.get(name, default)
+        if convert is not None:
+            value = convert(value)
+        parsed[name] = value
+    return parsed
 
 
 def parse_socket(sock):
@@ -68,6 +83,10 @@ def session_factory(request):
 
 def main(global_config, **settings):
     config = Configurator(settings=settings)
+
+    # Parse config file settings
+    settings = config.registry.settings
+    settings.update(parse_settings(settings))
 
     config.include('pyramid_chameleon')
     config.include('pyramid_tm')
