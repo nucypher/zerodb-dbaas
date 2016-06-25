@@ -15,6 +15,7 @@ def test_parse_socket():
     assert parse_socket('8001') == None
     assert parse_socket('foo:bar:8001') == ('foo:bar', 8001)
     assert parse_socket(':8001') == ('', 8001)
+    assert parse_socket('bar/baz') == None
 
 
 def test_no_config(pyramid):
@@ -37,6 +38,12 @@ def test_bad_config(pyramid):
     with pytest.raises(ConfigurationError):
         make_db(pyramid)
     pyramid.registry.settings.update({'zerodb.sock': 'zerodb.com'})
+    with pytest.raises(ConfigurationError):
+        make_db(pyramid)
+    pyramid.registry.settings.update({'zerodb.sock': 'localhost:8001'})
+    with pytest.raises(ConfigurationError):
+        make_db(pyramid)
+    pyramid.registry.settings.update({'zerodb.username': 'fred'})
     with pytest.raises(ConfigurationError):
         make_db(pyramid)
 
