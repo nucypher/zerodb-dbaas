@@ -1,5 +1,4 @@
 import hashlib
-import transaction
 import six
 
 from datetime import datetime
@@ -12,8 +11,12 @@ from pyramid.events import subscriber
 from pyramid.httpexceptions import HTTPFound
 
 from zerodb.crypto import ecc
+from zerodb.permissions import elliptic
 
 from zerodb_dbaas.models import UserRegistration
+
+kdf = elliptic.Client.kdf
+
 
 class ValidationError(Exception):
     pass
@@ -35,7 +38,7 @@ def home(request):
 @view_config(route_name='login', renderer='zerodb_dbaas:templates/login.pt')
 def login(request):
     """Login form"""
-    db = request.dbsession
+    # db = request.dbsession
     form = request.params
 
     if not form:
@@ -91,10 +94,11 @@ def register(request):
         if isinstance(password, six.binary_type) and password[0] == b'\x04'[0]:
             pubkey = password
         else:
-            pubkey = ecc.private(password).get_pubkey()
+            pubkey = ecc.private(str(password), (str(username), "ZERO"), kdf=kdf).get_pubkey()
 
         now = datetime.now()
-        hashcode = hashlib.sha256((username+email+"$3cr3t"+now.isoformat()).encode()).hexdigest()
+        hashcode = hashlib.sha256((
+            username + email + "$3cr3t" + now.isoformat()).encode()).hexdigest()
 
         newUser = UserRegistration(
             username=username,
@@ -178,7 +182,7 @@ def register_confirm(request):
 @view_config(route_name='register-success', renderer='zerodb_dbaas:templates/register-success.pt')
 def register_success(request):
     """Success landing page"""
-    db = request.dbsession
+    # db = request.dbsession
     form = request.params
 
     if not form:

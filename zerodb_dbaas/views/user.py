@@ -3,9 +3,12 @@ import six
 from ZODB.POSException import ConflictError
 
 from pyramid.view import view_config
-from pyramid.httpexceptions import HTTPFound
 
 from zerodb.crypto import ecc
+from zerodb.permissions import elliptic
+
+kdf = elliptic.Client.kdf
+
 
 class ValidationError(Exception):
     pass
@@ -30,7 +33,7 @@ def add_user(request):
         if isinstance(passphrase, six.binary_type) and passphrase[0] == b'\x04'[0]:
             pubkey = passphrase
         else:
-            pubkey = ecc.private(passphrase).get_pubkey()
+            pubkey = ecc.private(str(passphrase), (str(username), "ZERO"), kdf=kdf).get_pubkey()
 
         db._storage.add_user(username, pubkey)
 
@@ -86,7 +89,9 @@ def edit_user(request):
         if isinstance(passphrase, six.binary_type) and passphrase[0] == b'\x04'[0]:
             pubkey = passphrase
         else:
-            pubkey = ecc.private(passphrase).get_pubkey()
+            pubkey = ecc.private(
+                    str(passphrase), (str(username), "ZERO"),
+                    kdf=kdf).get_pubkey()
 
         db._storage.change_key(username, pubkey)
 
