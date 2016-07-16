@@ -78,6 +78,7 @@ def register(request):
     username = form.get('inputAccount')
     email = form.get('inputEmail')
     password = form.get('inputPassword')
+    print(form.get('inputPublicKey'))
     passwordConfirm = form.get('inputPasswordConfirmation')
 
     try:
