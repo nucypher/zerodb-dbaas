@@ -75,7 +75,7 @@ body {
 						</div>
 
 						<div class="btn-toolbar dashhead-toolbar">
-							<button id="stripeButton" type="button" class="btn btn-lg btn-pill btn-primary"><span class="icon icon-database"> Launch instance</span></button>
+							<button type="button" class="btn btn-lg btn-pill btn-primary" data-toggle="modal" data-target="#instanceModal"><span class="icon icon-database"> Launch instance</span></button>
 						</div>
 					</div>
 
@@ -118,19 +118,88 @@ body {
 		</div>
 
 		<metal:slot fill-slot="extra">
-			<div id="docsModal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+			<div id="instanceModal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="instanceModalLabel">
 				<div class="modal-dialog">
 					<div class="modal-content">
 
 						<div class="modal-header">
 							<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-							<h4 class="modal-title" id="myModalLabel">Example modal</h4>
+							<h4 class="modal-title" id="instanceModalLabel">Choose your instance</h4>
+							<p>All instances are t2.large running on AWS</p>
 						</div>
 						<div class="modal-body">
-							<p>You're looking at an example modal in the dashboard theme.</p>
-						</div>
-						<div class="modal-footer">
-							<button type="button" class="btn btn-primary" data-dismiss="modal">Cool, got it!</button>
+							<div class="row statcards">
+								<div class="col-sm-12 col-lg-4 m-b">
+									<div class="statcard statcard-success">
+										<div class="p-a">
+											<span class="statcard-desc">2GB</span>
+											<h2 class="statcard-number">
+												$25
+											</h2>
+											<span class="statcard-desc">per month</span>
+											<form action="/create_2gb_instance" method="POST" data-dismiss="modal">
+											  <script
+											    src="https://checkout.stripe.com/checkout.js" class="stripe-button"
+											    data-key="pk_test_a5PvmhImTHCrmhz852eOWS6l"
+											    data-amount="2500"
+											    data-name="ZeroDB, Inc."
+											    data-description="2GB subscription"
+											    data-image="../assets/img/zerodb.svg"
+											    data-locale="auto"
+											    data-zip-code="true">
+											  </script>
+											</form>
+										</div>
+									</div>
+								</div>
+								<div class="col-sm-12 col-lg-4 m-b">
+									<div class="statcard statcard-danger">
+										<div class="p-a">
+											<span class="statcard-desc">4GB</span>
+											<h2 class="statcard-number">
+												$40
+											</h2>
+											<span class="statcard-desc">per month</span>
+											<form action="/create_4gb_instance" method="POST" data-dismiss="modal">
+											  <script
+											    src="https://checkout.stripe.com/checkout.js" class="stripe-button"
+											    data-key="pk_test_a5PvmhImTHCrmhz852eOWS6l"
+											    data-amount="4000"
+											    data-name="ZeroDB, Inc."
+											    data-description="4GB subscription"
+											    data-image="../assets/img/zerodb.svg"
+											    data-locale="auto"
+											    data-zip-code="true">
+											  </script>
+											</form>
+										</div>
+									</div>
+								</div>
+								<div class="col-sm-12 col-lg-4 m-b">
+									<div class="statcard statcard-info">
+										<div class="p-a">
+											<span class="statcard-desc">8GB</span>
+											<h2 class="statcard-number">
+												$70
+											</h2>
+											<span class="statcard-desc">per month</span>
+											<form action="/create_8gb_instance" method="POST" data-dismiss="modal">
+											  <script
+											    src="https://checkout.stripe.com/checkout.js" class="stripe-button"
+											    data-key="pk_test_a5PvmhImTHCrmhz852eOWS6l"
+											    data-amount="7000"
+											    data-name="ZeroDB, Inc."
+											    data-description="8GB subscription"
+											    data-image="../assets/img/zerodb.svg"
+											    data-locale="auto"
+											    data-zip-code="true">
+											  </script>
+											</form>
+										</div>
+									</div>
+								</div>
+							</div>
+
 						</div>
 					</div>
 				</div>
@@ -146,37 +215,6 @@ body {
 // execute/clear BS loaders for docs
 $(function(){while(window.BS&&window.BS.loader&&window.BS.loader.length){(window.BS.loader.pop())()}})
 		</script>
-
-		<metal:slot fill-slot="scripts">
-			<script src="https://checkout.stripe.com/checkout.js"></script>
-			<script>
-				var handler = StripeCheckout.configure({
-					key: 'pk_test_a5PvmhImTHCrmhz852eOWS6l',
-					image: '../assets/img/zerodb.svg',
-					locale: 'auto',
-					token: function(token) {
-						// You can access the token ID with `token.id`.
-						// Get the token ID to your server-side code for use.
-					}
-				});
-
-				$('#stripeButton').on('click', function(e) {
-					// Open Checkout with further options:
-					handler.open({
-						name: 'ZeroDB, Inc.',
-						description: '1 database instance',
-						zipCode: true,
-						amount: 200
-					});
-					e.preventDefault();
-				});
-
-				// Close Checkout on page navigation:
-				$(window).on('popstate', function() {
-					handler.close();
-				});
-			</script>
-		</metal:slot>
 
 	</body>
 </html>
