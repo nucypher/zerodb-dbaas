@@ -45,10 +45,6 @@ body {
 							${error_type}: ${error}
 						</div>
 						<div class="form-group">
-							<label for="inputAccount">Account Name</label>
-							<input type="text" class="form-control" id="inputAccount" name="inputAccount" placeholder="Account Name" />
-						</div>
-						<div class="form-group">
 							<label for="inputEmail">Email</label>
 							<input type="email" class="form-control" id="inputEmail" name="inputEmail" placeholder="Email" />
 						</div>

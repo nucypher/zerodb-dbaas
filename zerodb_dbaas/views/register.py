@@ -43,7 +43,7 @@ def login(request):
     if not form:
         return {'ok': 1}
 
-    username = form.get('inputAccount')
+    username = form.get('inputEmail')  # XXX
     password = form.get('inputPassword')
 
     try:
@@ -74,19 +74,15 @@ def register(request):
     if not form:
         return {'ok': 1}
 
-    username = form.get('inputAccount')
     email = form.get('inputEmail')
     password = form.get('inputPassword')
     passwordConfirm = form.get('inputPasswordConfirmation')
 
-    print(password)
-    print(passwordConfirm)
-
     try:
-        if not (username and email and password and passwordConfirm):
+        if not (email and password and passwordConfirm):
             raise ValidationError('All fields are required')
 
-        user = db[UserRegistration].query(username=username)
+        user = db[UserRegistration].query(email=email)
         if user:
             raise ValidationError('Account name is already in use')
 
@@ -100,10 +96,9 @@ def register(request):
 
         now = datetime.now()
         hashcode = hashlib.sha256((
-            username + email + "$3cr3t" + now.isoformat()).encode()).hexdigest()
+            email + "$3cr3t" + now.isoformat()).encode()).hexdigest()
 
         newUser = UserRegistration(
-            username=username,
             email=email,
             password=pubkey,
             created=now,
@@ -168,7 +163,7 @@ def register_confirm(request):
             raise ValidationError('Registration code has already been used')
 
         user.completed = now
-        db._storage.add_user(user.username, user.password)
+        db._storage.add_user(user.email, user.password)
 
         if request.content_type == 'application/json':
             return {'ok': 1}
@@ -190,8 +185,8 @@ def register_success(request):
     if not form:
         return {'ok': 1}
 
-    username = form.get('inputAccount')
-    password = form.get('inputPassword')
+    username = form.get('inputEmail')  # XXX
+    password = form.get('inputPassword')  # XXX
 
     try:
         if not (username and password):
@@ -209,26 +204,20 @@ def register_success(request):
 
 @view_config(route_name='_account_available', renderer='json')
 def account_available(request):
-    """Check availability of username/email"""
+    """Check availability of email"""
     db = request.dbsession
     form = request.json_body
 
-    username = form.get('inputAccount')
+    #  username = form.get('inputAccount')  # XXX
     email = form.get('inputEmail')
 
     try:
-        if not (username or email):
+        if not email:
             raise ValidationError('Account name or email are required')
 
-        if username:
-            user = db[UserRegistration].query(username=username)
-            if user:
-                raise ValidationError('Account name is already in use')
-
-        if email:
-            user = db[UserRegistration].query(email=email)
-            if user:
-                raise ValidationError('Email address is already in use')
+        user = db[UserRegistration].query(email=email)
+        if user:
+            raise ValidationError('Account name is already in use')
 
     except ValidationError as e:
         return {'ok': 0, 'error': str(e), 'error_type': e.__class__.__name__}

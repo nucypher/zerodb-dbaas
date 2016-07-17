@@ -1,6 +1,6 @@
-import pytest
 import re
 import six
+
 
 def decode(s):
     return s.decode('utf-8') if six.PY3 else s
@@ -10,15 +10,14 @@ def test_register_page(testapp):
     response = testapp.get('/register')
     assert response.status_code == 200
     assert response.content_type == 'text/html'
-    assert b'Account Name' in response.body
+    assert b'Email' in response.body
 
 
 def test_register_happy_path(testapp):
     form = dict(
-        inputAccount='fred',
         inputEmail='fred@bedrock.com',
-        inputPassword='secret',
-        inputPasswordConfirmation='secret',
+        inputPassword='1a' * 64,
+        inputPasswordConfirmation='1a' * 64,
     )
 
     # Submit the registration form
@@ -49,10 +48,9 @@ def test_register_happy_path(testapp):
 def test_register_happy_path_json(testapp):
     # Call _register API
     form = dict(
-        inputAccount='barney',
         inputEmail='barney@bedrock.com',
-        inputPassword='secret',
-        inputPasswordConfirmation='secret',
+        inputPassword='1a' * 64,
+        inputPasswordConfirmation='1a' * 64,
     )
     response = testapp.post_json('/_register', form)
     assert response.status_code == 200
@@ -78,7 +76,7 @@ def test_register_happy_path_json(testapp):
 
 def test_account_available(testapp):
     form = dict(
-        inputAccount='wilma',
+        inputEmail='wilma',
     )
     response = testapp.post_json('/_account_available', form)
     assert response.status_code == 200

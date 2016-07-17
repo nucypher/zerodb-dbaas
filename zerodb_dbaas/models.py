@@ -23,9 +23,7 @@ def make_app(db):
 
 
 class UserRegistration(Model):
-    username = Field()
     email = Field()
-    password = Field()
     created = Field()
     completed = Field()
     hashcode = Field()
