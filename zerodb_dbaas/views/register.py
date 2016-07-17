@@ -1,5 +1,5 @@
 import hashlib
-import six
+import binascii
 
 from datetime import datetime
 from datetime import timedelta
@@ -10,7 +10,6 @@ from pyramid.interfaces import IBeforeRender
 from pyramid.events import subscriber
 from pyramid.httpexceptions import HTTPFound
 
-from zerodb.crypto import ecc
 from zerodb.permissions import elliptic
 
 from zerodb_dbaas.models import UserRegistration
@@ -78,8 +77,10 @@ def register(request):
     username = form.get('inputAccount')
     email = form.get('inputEmail')
     password = form.get('inputPassword')
-    print(form.get('inputPublicKey'))
     passwordConfirm = form.get('inputPasswordConfirmation')
+
+    print(password)
+    print(passwordConfirm)
 
     try:
         if not (username and email and password and passwordConfirm):
@@ -89,13 +90,13 @@ def register(request):
         if user:
             raise ValidationError('Account name is already in use')
 
-        if not (password == passwordConfirm):
-            raise ValidationError('Password confirmation does not match')
-
-        if isinstance(password, six.binary_type) and password[0] == b'\x04'[0]:
-            pubkey = password
-        else:
-            pubkey = ecc.private(str(password), (str(username), "ZERO"), kdf=kdf).get_pubkey()
+        try:
+            pubkey = binascii.unhexlify(password)
+        except:
+            raise ValidationError(
+                    'You need to turn javascript on to ' +
+                    'generate public key from the passphrase client-side')
+        pubkey = b'\x04' + pubkey
 
         now = datetime.now()
         hashcode = hashlib.sha256((
