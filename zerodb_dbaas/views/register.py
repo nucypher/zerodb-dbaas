@@ -43,8 +43,9 @@ def login(request):
     if not form:
         return {'ok': 1}
 
-    username = form.get('inputEmail')  # XXX
+    username = form.get('inputEmail')
     password = form.get('inputPassword')
+    print(password)
 
     try:
         if not (username and password):

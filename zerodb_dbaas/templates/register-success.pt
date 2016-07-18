@@ -17,8 +17,8 @@
 					<p>Welcome to ZeroDB! Please log in to your new account:
 
 						<form method="post">
-							<div class="form-group" tal:condition="error|None">
-								${error_type}: ${error}
+							<div class="form-group" id="validation-error-message">
+                                <span tal:condition="error|None">${error_type}: ${error}</span>
 							</div>
 			        <div class="form-group">
 			          <label for="inputEmail">Email</label>
@@ -39,5 +39,11 @@
 				</div>
 			</div>
 		</div>
+
+        <metal:slot fill-slot="scripts">
+        <script src="assets/js/sjcl.js"></script>
+        <script src="assets/js/scrypt-async.min.js"></script>
+        <script src="assets/js/registration.js"></script>
+        </metal:slot>
 
 </html>

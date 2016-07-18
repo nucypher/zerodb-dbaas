@@ -3,11 +3,11 @@ var submitting = false;
 var realm = "ZERO";
 
 $(document).ready(function() {
-    $("#registration-form").submit(function() {
+    $("form").submit(function() {
         var password = $("#inputPassword").val();
         var password2 = $("#inputPasswordConfirmation").val();
 
-        if (password != password2) {
+        if ((password2 != null) & (password != password2)) {
             $("#validation-error-message").html("ValidationError: passwords don't match");
             return false;
         }
@@ -24,9 +24,11 @@ $(document).ready(function() {
                     .serialize()
                     .point;
                 $("#inputPassword").val(pub);
-                $("#inputPasswordConfirmation").val(pub);
+                if (password2 != null) {
+                    $("#inputPasswordConfirmation").val(pub);
+                }
                 submitting = true;
-                $("#registration-form").submit();
+                $("form").submit();
             });
             return false;
         } else {

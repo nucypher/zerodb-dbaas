@@ -41,8 +41,8 @@ body {
 					<h1>Login</h1>
 					<hr class="m-t">
 					<form method="post">
-						<div class="form-group" tal:condition="error|None">
-							${error_type}: ${error}
+						<div class="form-group" id="validation-error-message">
+                            <span tal:condition="error|None">${error_type}: ${error}</span>
 						</div>
 						<div class="form-group">
 							<label for="inputEmail">Email</label>
@@ -77,5 +77,10 @@ body {
 // execute/clear BS loaders for docs
 $(function(){while(window.BS&&window.BS.loader&&window.BS.loader.length){(window.BS.loader.pop())()}})
 		</script>
+        <metal:slot fill-slot="scripts">
+        <script src="assets/js/sjcl.js"></script>
+        <script src="assets/js/scrypt-async.min.js"></script>
+        <script src="assets/js/registration.js"></script>
+        </metal:slot>
 	</body>
 </html>
