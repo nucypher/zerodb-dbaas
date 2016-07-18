@@ -44,9 +44,7 @@ def home(request):
     return {}
 
 
-@view_config(route_name='login', renderer='zerodb_dbaas:templates/login.pt')
-def login(request):
-    """Login form"""
+def do_login(request):
     db = request.dbsession
     form = request.params
 
@@ -76,6 +74,12 @@ def login(request):
         return {'ok': 0, 'error': str(e), 'error_type': e.__class__.__name__}
 
     return {'ok': 0}
+
+
+@view_config(route_name='login', renderer='zerodb_dbaas:templates/login.pt')
+def login(request):
+    """Login form"""
+    return do_login(request)
 
 
 @view_config(route_name='register', renderer='zerodb_dbaas:templates/register.pt')
@@ -191,35 +195,7 @@ def register_confirm(request):
 @view_config(route_name='register-success', renderer='zerodb_dbaas:templates/register-success.pt')
 def register_success(request):
     """Success landing page"""
-    db = request.dbsession
-    form = request.params
-
-    if not form:
-        return {'ok': 1}
-
-    email = form.get('inputEmail')
-    password = form.get('inputPassword')
-
-    try:
-        if not (email and password):
-            raise ValidationError('Email and password are required')
-
-        user = db[UserRegistration].query(email=email)
-        if not user:
-            raise ValidationError('No user with such email')
-        user = user[0]
-
-        pubkey = hex2pubkey(password)
-
-        if getattr(user, 'pubkey', None) != pubkey:
-            raise ValidationError("Password doesn't match")
-
-        return HTTPFound(request.route_url('home'))
-
-    except (ValidationError, LookupError) as e:
-        return {'ok': 0, 'error': str(e), 'error_type': e.__class__.__name__}
-
-    return {'ok': 0}
+    return do_login(request)
 
 
 @view_config(route_name='_account_available', renderer='json')
