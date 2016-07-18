@@ -41,8 +41,8 @@ body {
 					<h1>Register</h1>
 					<hr class="m-t">
 					<form method="post" id="registration-form">
-						<div class="form-group" tal:condition="error|None">
-							${error_type}: ${error}
+                        <div class="form-group" id="validation-error-message">
+                            <span tal:condition="error|None">${error_type}: ${error}</span>
 						</div>
 						<div class="form-group">
 							<label for="inputEmail">Email</label>

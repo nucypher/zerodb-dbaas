@@ -4,9 +4,16 @@ var realm = "ZERO";
 
 $(document).ready(function() {
     $("#registration-form").submit(function() {
+        var password = $("#inputPassword").val();
+        var password2 = $("#inputPasswordConfirmation").val();
+
+        if (password != password2) {
+            $("#validation-error-message").html("ValidationError: passwords don't match");
+            return false;
+        }
+
         if (!submitting) {
-            var password = $("#inputPassword").val();
-            var username = $("#inputAccount").val();
+            var username = $("#inputEmail").val();
             var salt = username + "|" + realm;
 
             scrypt(password, salt, 14, 8, 32, 5000, function(out) {
