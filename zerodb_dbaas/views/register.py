@@ -17,6 +17,16 @@ from zerodb_dbaas.models import UserRegistration
 kdf = elliptic.Client.kdf
 
 
+def hex2pubkey(password):
+    try:
+        pubkey = binascii.unhexlify(password)
+    except:
+        raise ValidationError(
+                'You need to turn javascript on to ' +
+                'generate public key from the passphrase client-side')
+    return b'\x04' + pubkey
+
+
 class ValidationError(Exception):
     pass
 
@@ -37,21 +47,28 @@ def home(request):
 @view_config(route_name='login', renderer='zerodb_dbaas:templates/login.pt')
 def login(request):
     """Login form"""
-    # db = request.dbsession
+    db = request.dbsession
     form = request.params
 
     if not form:
         return {'ok': 1}
 
-    username = form.get('inputEmail')
+    email = form.get('inputEmail')
     password = form.get('inputPassword')
-    print(password)
 
     try:
-        if not (username and password):
-            raise ValidationError('Account name and password are required')
+        if not (email and password):
+            raise ValidationError('Email and password are required')
 
-        # ...
+        user = db[UserRegistration].query(email=email)
+        if not user:
+            raise ValidationError('No user with such email')
+        user = user[0]
+
+        pubkey = hex2pubkey(password)
+
+        if getattr(user, 'pubkey', None) != pubkey:
+            raise ValidationError("Password doesn't match")
 
         return HTTPFound(request.route_url('home'))
 
@@ -87,13 +104,7 @@ def register(request):
         if user:
             raise ValidationError('Account name is already in use')
 
-        try:
-            pubkey = binascii.unhexlify(password)
-        except:
-            raise ValidationError(
-                    'You need to turn javascript on to ' +
-                    'generate public key from the passphrase client-side')
-        pubkey = b'\x04' + pubkey
+        pubkey = hex2pubkey(password)
 
         now = datetime.now()
         hashcode = hashlib.sha256((
@@ -101,7 +112,7 @@ def register(request):
 
         newUser = UserRegistration(
             email=email,
-            password=pubkey,
+            pubkey=pubkey,
             created=now,
             completed=datetime(1970, 1, 1),
             hashcode=hashcode)
@@ -164,7 +175,7 @@ def register_confirm(request):
             raise ValidationError('Registration code has already been used')
 
         user.completed = now
-        db._storage.add_user(user.email, user.password)
+        db._storage.add_user(user.email, user.pubkey)
 
         if request.content_type == 'application/json':
             return {'ok': 1}
@@ -180,20 +191,28 @@ def register_confirm(request):
 @view_config(route_name='register-success', renderer='zerodb_dbaas:templates/register-success.pt')
 def register_success(request):
     """Success landing page"""
-    # db = request.dbsession
+    db = request.dbsession
     form = request.params
 
     if not form:
         return {'ok': 1}
 
-    username = form.get('inputEmail')  # XXX
-    password = form.get('inputPassword')  # XXX
+    email = form.get('inputEmail')
+    password = form.get('inputPassword')
 
     try:
-        if not (username and password):
-            raise ValidationError('Account name and password are required')
+        if not (email and password):
+            raise ValidationError('Email and password are required')
 
-        # ...
+        user = db[UserRegistration].query(email=email)
+        if not user:
+            raise ValidationError('No user with such email')
+        user = user[0]
+
+        pubkey = hex2pubkey(password)
+
+        if getattr(user, 'pubkey', None) != pubkey:
+            raise ValidationError("Password doesn't match")
 
         return HTTPFound(request.route_url('home'))
 
