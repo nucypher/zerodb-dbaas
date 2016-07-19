@@ -25,7 +25,9 @@ def pyramid(request):
 @pytest.fixture(scope="function")
 def testapp(request, db):
     from zerodb_dbaas import main
-    app = main({}, testdb=db)
+    app = main({}, **{
+            'website.secret': '736e743c1b837c2ec8e3c715a5666f35e8c5e0ee55d35df0582d9002cc55a6f9',
+            'testdb': db})
     from webtest import TestApp
     app = TestApp(app)
     if request.instance is not None:

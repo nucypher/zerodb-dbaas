@@ -1,3 +1,5 @@
+from pyramid.authentication import AuthTktAuthenticationPolicy
+from pyramid.authorization import ACLAuthorizationPolicy
 from pyramid.config import Configurator
 from pyramid.exceptions import ConfigurationError
 
@@ -27,7 +29,7 @@ def make_db(config):
     password = config.registry.settings.get('zerodb.password')
 
     if sock is None:
-        db = config.registry.settings.get('testdb') # Testing
+        db = config.registry.settings.get('testdb')  # Testing
         if db is None:
             raise ConfigurationError('No zerodb.sock defined in Pyramid settings')
     else:
@@ -70,6 +72,16 @@ def main(global_config, **settings):
     config.include('pyramid_chameleon')
     config.include('pyramid_tm')
 
+    # Authentication with single security group
+    # http://docs.pylonsproject.org/projects/pyramid/en/latest/quick_tutorial/authentication.html
+    authn_policy = AuthTktAuthenticationPolicy(
+        settings['website.secret'],
+        callback=lambda user: ['group:customers'],
+        hashalg='sha512')
+    authz_policy = ACLAuthorizationPolicy()
+    config.set_authentication_policy(authn_policy)
+    config.set_authorization_policy(authz_policy)
+
     config.add_request_method(session_factory, 'dbsession', reify=True)
 
     config.add_static_view('static', 'static', cache_max_age=3600)
@@ -83,6 +95,7 @@ def main(global_config, **settings):
     config.add_static_view('assets', 'assets', cache_max_age=3600)
     config.add_route('home', '/')
     config.add_route('login', '/login')
+    config.add_route('logout', '/logout')
     config.add_route('register', '/register')
     config.add_route('register-email', '/register-email')
     config.add_route('register-confirm', '/register-confirm')

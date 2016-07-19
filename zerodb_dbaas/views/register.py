@@ -10,6 +10,10 @@ from pyramid.interfaces import IBeforeRender
 from pyramid.events import subscriber
 from pyramid.httpexceptions import HTTPFound
 
+from pyramid.security import (
+    remember,
+    forget,)
+
 from zerodb.permissions import elliptic
 
 from zerodb_dbaas.models import UserRegistration
@@ -68,7 +72,10 @@ def do_login(request):
         if getattr(user, 'pubkey', None) != pubkey:
             raise ValidationError("Password doesn't match")
 
-        return HTTPFound(request.route_url('home'))
+        # All good
+        headers = remember(request, email)
+
+        return HTTPFound(request.route_url('home'), headers=headers)
 
     except (ValidationError, LookupError) as e:
         return {'ok': 0, 'error': str(e), 'error_type': e.__class__.__name__}
@@ -80,6 +87,15 @@ def do_login(request):
 def login(request):
     """Login form"""
     return do_login(request)
+
+
+@view_config(route_name='logout')
+def logout(request):
+    request = request
+    headers = forget(request)
+    url = request.route_url('home')
+    return HTTPFound(location=url,
+                     headers=headers)
 
 
 @view_config(route_name='register', renderer='zerodb_dbaas:templates/register.pt')
