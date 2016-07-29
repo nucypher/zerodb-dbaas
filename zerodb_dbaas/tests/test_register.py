@@ -65,9 +65,12 @@ def test_register_happy_path_json(testapp):
     response = testapp.post_json('/_register_confirm', form)
     assert response.status_code == 200
     assert response.content_type == 'application/json'
-    assert response.json_body.get('ok', 0) == 1, response.json_body
+    assert response.json_body.get('ok') == 1, response.json_body
 
     # Account is no longer available
+    form = dict(
+        inputEmail='barney@bedrock.com',
+    )
     response = testapp.post_json('/_account_available', form)
     assert response.status_code == 200
     assert response.content_type == 'application/json'
@@ -76,7 +79,7 @@ def test_register_happy_path_json(testapp):
 
 def test_account_available(testapp):
     form = dict(
-        inputEmail='wilma',
+        inputEmail='wilma@bedrock.com',
     )
     response = testapp.post_json('/_account_available', form)
     assert response.status_code == 200
