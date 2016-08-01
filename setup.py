@@ -24,6 +24,7 @@ tests_require = [
     'WebTest >= 1.3.1',  # py3 compat
     'pytest',  # includes virtualenv
     'pytest-cov',
+    'zope.testing', # FIXME
     ]
 
 setup(name='zerodb-dbaas',
