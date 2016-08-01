@@ -126,7 +126,7 @@ def main(global_config, **settings):
 
     config.add_route('registrations', '/registrations')
 
-    config.scan()
+    config.scan(ignore='zerodb_dbaas.tests')
     config.commit()
 
     # Connect on startup
