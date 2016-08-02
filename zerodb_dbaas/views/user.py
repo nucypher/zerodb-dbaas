@@ -1,4 +1,3 @@
-import six
 import zerodb
 
 from ZODB.POSException import ConflictError
@@ -50,7 +49,7 @@ def add_user(request):
 
 @view_config(route_name='_del_user', renderer='json')
 def del_user(request):
-    db = request.dbsession
+    admin_db = request.admin_db
 
     if request.content_type == 'application/json':
         form = request.json_body
@@ -63,7 +62,9 @@ def del_user(request):
         if not username:
             raise ValidationError('Username is required')
 
-        db._storage.del_user(username)
+        with admin_db.transaction() as conn:
+            admin = zerodb.permissions.base.get_admin(conn)
+            admin.del_user(username)
 
     except ConflictError:
         raise
@@ -75,7 +76,7 @@ def del_user(request):
 
 @view_config(route_name='_edit_user', renderer='json')
 def edit_user(request):
-    db = request.dbsession
+    admin_db = request.admin_db
 
     if request.content_type == 'application/json':
         form = request.json_body
@@ -89,14 +90,14 @@ def edit_user(request):
         if not (username and passphrase):
             raise ValidationError('Username and passphrase are required')
 
-        if isinstance(passphrase, six.binary_type) and passphrase[0] == b'\x04'[0]:
-            pubkey = passphrase
-        else:
-            pubkey = ecc.private(
-                    str(passphrase), (str(username), "ZERO"),
-                    kdf=kdf).get_pubkey()
-
-        db._storage.change_key(username, pubkey)
+        with admin_db.transaction() as conn:
+            admin = zerodb.permissions.base.get_admin(conn)
+            if passphrase.startswith("hash::"):
+                passphrase = bytes.fromhex(passphrase[6:])
+                admin.change_cert(username, password=passphrase,
+                                  security=nohashing)
+            else:
+                admin.change_cert(username, password=passphrase)
 
     except ConflictError:
         raise
