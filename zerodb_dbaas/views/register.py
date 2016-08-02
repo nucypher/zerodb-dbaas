@@ -61,9 +61,9 @@ def do_login(request):
             raise ValidationError('No user with such email')
         user = user[0]
 
-        pubkey = hex2pubkey(password)
+        password_hash = decode_password_hex(password)
 
-        if getattr(user, 'pubkey', None) != pubkey:
+        if getattr(user, 'password_hash', None) != password_hash:
             raise ValidationError("Password doesn't match")
 
         # All good
@@ -118,7 +118,7 @@ def register(request):
         if user:
             raise ValidationError('Account name is already in use')
 
-        password_hash = decode_password_hash(password)
+        password_hash = decode_password_hex(password)
 
         # Why not just /dev/urandom?
         now = datetime.now()
