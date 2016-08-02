@@ -185,7 +185,7 @@ def register_confirm(request):
 
         with admin_db.transaction() as conn:
             admin = zerodb.permissions.base.get_admin(conn)
-            admin.add_user(user.email, password=user.hash_password,
+            admin.add_user(user.email, password=user.password_hash,
                            security=nohashing)
 
         if request.content_type == 'application/json':

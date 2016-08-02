@@ -16,8 +16,8 @@ def test_register_page(testapp):
 def test_register_happy_path(testapp):
     form = dict(
         inputEmail='fred@bedrock.com',
-        inputPassword='1a' * 64,
-        inputPasswordConfirmation='1a' * 64,
+        inputPassword='hash::' + '1a' * 64,
+        inputPasswordConfirmation='hash::' + '1a' * 64,
     )
 
     # Submit the registration form
@@ -49,8 +49,8 @@ def test_register_happy_path_json(testapp):
     # Call _register API
     form = dict(
         inputEmail='barney@bedrock.com',
-        inputPassword='1a' * 64,
-        inputPasswordConfirmation='1a' * 64,
+        inputPassword='hash::' + '1a' * 64,
+        inputPasswordConfirmation='hash::' + '1a' * 64,
     )
     response = testapp.post_json('/_register', form)
     assert response.status_code == 200
