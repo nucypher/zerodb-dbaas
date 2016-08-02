@@ -1,15 +1,19 @@
+import ZEO
+import ZEO.tests.testssl
+
 from pyramid.authentication import AuthTktAuthenticationPolicy
 from pyramid.authorization import ACLAuthorizationPolicy
 from pyramid.config import Configurator
 from pyramid.exceptions import ConfigurationError
-from pyramid.settings import asbool
+# from pyramid.settings import asbool
 
+import zerodb.db
 from zerodb import DB
 from .models import make_app
 
-default_settings = [
+default_settings = []
 #    ('example_bool_setting', asbool, false),
-]
+# ]
 
 
 def parse_settings(settings):
@@ -42,6 +46,12 @@ def make_db(config):
     sock = config.registry.settings.get('zerodb.sock')
     username = config.registry.settings.get('zerodb.username')
     password = config.registry.settings.get('zerodb.password')
+    server_cert = config.registry.settings.get('zerodb.server_cert')
+
+    # Test certs
+    # Maybe there is a better way?
+    if server_cert == 'test_server_cert':
+        server_cert = ZEO.tests.testssl.server_cert
 
     if sock is None:
         db = config.registry.settings.get('testdb')  # Testing
@@ -55,9 +65,19 @@ def make_db(config):
             raise ConfigurationError('No zerodb.username defined in Pyramid settings')
         if password is None:
             raise ConfigurationError('No zerodb.password defined in Pyramid settings')
-        db = DB(sock, username=username, password=password)
+
+        # Better to use client cert for the admin account?
+        db = DB(sock, username=username, password=password,
+                server_cert=server_cert)
+        admin_db = ZEO.DB(
+                sock,
+                ssl=zerodb.db.make_ssl(server_cert=server_cert),
+                credentials=dict(name=username, password=password),
+                wait_timeout=10000)
 
     zodb_dbs[''] = db
+    zodb_dbs['admin'] = admin_db
+
     return db
 
 
