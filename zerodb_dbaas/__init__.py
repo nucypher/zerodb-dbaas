@@ -101,6 +101,14 @@ def session_factory(request):
     return make_app(db)
 
 
+def get_admin_db(request):
+    zodb_dbs = getattr(request.registry, '_zodb_databases', None)
+    if zodb_dbs is None:
+        raise ConfigurationError('No zerodb database configured')
+    admin_db = zodb_dbs.get('admin')
+    return admin_db
+
+
 def main(global_config, **settings):
     config = Configurator(settings=settings)
 
@@ -122,6 +130,7 @@ def main(global_config, **settings):
     config.set_authorization_policy(authz_policy)
 
     config.add_request_method(session_factory, 'dbsession', reify=True)
+    config.add_request_method(get_admin_db, 'admin_db', reify=True)
 
     config.add_static_view('static', 'static', cache_max_age=3600)
     config.add_route('count', '/count')

@@ -4,14 +4,13 @@ from ZODB.POSException import ConflictError
 
 from pyramid.view import view_config
 
-from zerodb.crypto import ecc
-from zerodb.permissions import elliptic
-
-kdf = elliptic.Client.kdf
-
 
 class ValidationError(Exception):
     pass
+
+
+def nohashing(uname, password, key_file, cert_file, appname, key):
+    return password, key
 
 
 @view_config(route_name='_add_user', renderer='json')
