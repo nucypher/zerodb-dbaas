@@ -8,6 +8,7 @@ from pyramid.exceptions import ConfigurationError
 # from pyramid.settings import asbool
 
 import zerodb.db
+from zerodb.crypto import kdf
 from zerodb import DB
 from .models import make_app
 
@@ -70,10 +71,14 @@ def make_db(config):
         # Better to use client cert for the admin account?
         db = DB(sock, username=username, password=password,
                 server_cert=server_cert)
+        # If using password to log in, ZEO should use its hash
+        h, _ = kdf.hash_password(
+                username, password,
+                key_file=None, cert_file=None, appname='zerodb.com', key=None)
         admin_db = ZEO.DB(
                 sock,
                 ssl=zerodb.db.make_ssl(server_cert=server_cert),
-                credentials=dict(name=username, password=password),
+                credentials=dict(name=username, password=h),
                 wait_timeout=11)
 
     zodb_dbs[''] = db
