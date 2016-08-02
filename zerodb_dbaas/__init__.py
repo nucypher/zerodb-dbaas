@@ -74,7 +74,7 @@ def make_db(config):
                 sock,
                 ssl=zerodb.db.make_ssl(server_cert=server_cert),
                 credentials=dict(name=username, password=password),
-                wait_timeout=10000)
+                wait_timeout=11)
 
     zodb_dbs[''] = db
     zodb_dbs['admin'] = admin_db
