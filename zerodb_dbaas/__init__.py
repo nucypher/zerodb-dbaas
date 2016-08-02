@@ -55,6 +55,7 @@ def make_db(config):
 
     if sock is None:
         db = config.registry.settings.get('testdb')  # Testing
+        admin_db = config.registry.settings.get('admin_db')  # Testing
         if db is None:
             raise ConfigurationError('No zerodb.sock defined in Pyramid settings')
     else:

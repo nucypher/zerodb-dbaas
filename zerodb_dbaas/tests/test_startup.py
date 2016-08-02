@@ -27,7 +27,8 @@ def test_no_config(pyramid):
 def test_test_config(pyramid):
     from zerodb_dbaas import make_db
     testdb = object()
-    pyramid.registry.settings.update({'testdb': testdb})
+    admin_db = object()
+    pyramid.registry.settings.update({'testdb': testdb, 'admin_db': admin_db})
     db = make_db(pyramid)
     assert db is testdb
 
@@ -51,9 +52,10 @@ def test_bad_config(pyramid):
 def test_good_config(pyramid, zeo_server):
     from zerodb_dbaas import make_db
     settings = {
-        'zerodb.sock': zeo_server,
+        'zerodb.sock': '%s:%s' % zeo_server,
         'zerodb.username': 'root',
-        'zerodb.password': TEST_PASSPHRASE
+        'zerodb.password': TEST_PASSPHRASE,
+        'zerodb.server_cert': 'test_server_cert'
     }
     pyramid.registry.settings.update(settings)
     db = make_db(pyramid)
