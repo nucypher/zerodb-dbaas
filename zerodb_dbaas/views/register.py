@@ -14,11 +14,7 @@ from pyramid.security import (
     remember,
     forget,)
 
-from zerodb.permissions import elliptic
-
 from zerodb_dbaas.models import UserRegistration
-
-kdf = elliptic.Client.kdf
 
 
 def hex2pubkey(password):
