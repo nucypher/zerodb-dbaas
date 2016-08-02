@@ -1,5 +1,4 @@
 import hashlib
-import binascii
 
 from datetime import datetime
 from datetime import timedelta
@@ -17,14 +16,13 @@ from pyramid.security import (
 from zerodb_dbaas.models import UserRegistration
 
 
-def hex2pubkey(password):
-    try:
-        pubkey = binascii.unhexlify(password)
-    except:
+def decode_password_hex(password):
+    if password.startswith("hash::"):
+        return bytes.fromhex(password[6:])
+    else:
         raise ValidationError(
                 'You need to turn javascript on to ' +
                 'generate public key from the passphrase client-side')
-    return b'\x04' + pubkey
 
 
 class ValidationError(Exception):
@@ -120,15 +118,16 @@ def register(request):
         if user:
             raise ValidationError('Account name is already in use')
 
-        pubkey = hex2pubkey(password)
+        password_hash = decode_password_hash(password)
 
+        # Why not just /dev/urandom?
         now = datetime.now()
         hashcode = hashlib.sha256((
             email + "$3cr3t" + now.isoformat()).encode()).hexdigest()
 
         newUser = UserRegistration(
             email=email,
-            pubkey=pubkey,
+            password_hash=password_hash,
             created=now,
             activated=datetime(1970, 1, 1),
             hashcode=hashcode)
