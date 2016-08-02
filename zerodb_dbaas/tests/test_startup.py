@@ -9,13 +9,13 @@ def test_parse_socket():
     assert parse_socket('localhost:8001') == ('localhost', 8001)
     assert parse_socket('zerodb.com:8001') == ('zerodb.com', 8001)
     assert parse_socket('/foo/bar/baz') == '/foo/bar/baz'
-    assert parse_socket('') == None
-    assert parse_socket(None) == None
-    assert parse_socket('zerodb.com') == None
-    assert parse_socket('8001') == None
+    assert parse_socket('') is None
+    assert parse_socket(None) is None
+    assert parse_socket('zerodb.com') is None
+    assert parse_socket('8001') is None
     assert parse_socket('foo:bar:8001') == ('foo:bar', 8001)
     assert parse_socket(':8001') == ('', 8001)
-    assert parse_socket('bar/baz') == None
+    assert parse_socket('bar/baz') is None
 
 
 def test_no_config(pyramid):
