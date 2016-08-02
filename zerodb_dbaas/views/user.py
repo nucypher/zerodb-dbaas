@@ -4,13 +4,7 @@ from ZODB.POSException import ConflictError
 
 from pyramid.view import view_config
 
-
-class ValidationError(Exception):
-    pass
-
-
-def nohashing(uname, password, key_file, cert_file, appname, key):
-    return password, key
+from .common import (ValidationError, nohashing, decode_password_hex)
 
 
 @view_config(route_name='_add_user', renderer='json')
@@ -33,10 +27,10 @@ def add_user(request):
 
         with admin_db.transaction() as conn:
             admin = zerodb.permissions.base.get_admin(conn)
-            if passphrase.startswith("hash::"):
-                passphrase = bytes.fromhex(passphrase[6:])
+            try:
+                passphrase = decode_password_hex(passphrase)
                 admin.add_user(username, password=passphrase, security=nohashing)
-            else:
+            except ValidationError:
                 admin.add_user(username, password=passphrase)
 
     except ConflictError:

@@ -3,6 +3,8 @@ import hashlib
 from datetime import datetime
 from datetime import timedelta
 
+import zerodb.permissions.base
+
 from pyramid.view import view_config
 from pyramid.renderers import get_renderer
 from pyramid.interfaces import IBeforeRender
@@ -15,18 +17,7 @@ from pyramid.security import (
 
 from zerodb_dbaas.models import UserRegistration
 
-
-def decode_password_hex(password):
-    if password.startswith("hash::"):
-        return bytes.fromhex(password[6:])
-    else:
-        raise ValidationError(
-                'You need to turn javascript on to ' +
-                'generate public key from the passphrase client-side')
-
-
-class ValidationError(Exception):
-    pass
+from .common import (ValidationError, nohashing, decode_password_hex)
 
 
 @subscriber(IBeforeRender)
@@ -163,6 +154,7 @@ def register_confirm(request):
     Verifies all preconditions and creates the database user.
     """
     db = request.dbsession
+    admin_db = request.admin_db
 
     if request.content_type == 'application/json':
         form = request.json_body
@@ -190,7 +182,11 @@ def register_confirm(request):
             raise ValidationError('Registration code has already been used')
 
         user.activated = now
-        db._storage.add_user(user.email, user.pubkey)
+
+        with admin_db.transaction() as conn:
+            admin = zerodb.permissions.base.get_admin(conn)
+            admin.add_user(user.email, password=user.hash_password,
+                           security=nohashing)
 
         if request.content_type == 'application/json':
             return {'ok': 1}
