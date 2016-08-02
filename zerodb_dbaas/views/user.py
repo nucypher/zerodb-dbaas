@@ -15,7 +15,7 @@ def nohashing(uname, password, key_file, cert_file, appname, key):
 
 @view_config(route_name='_add_user', renderer='json')
 def add_user(request):
-    db = request.dbsession
+    admin_db = request.admin_db
 
     if request.content_type == 'application/json':
         form = request.json_body
@@ -24,17 +24,20 @@ def add_user(request):
 
     username = form.get('username')
     passphrase = form.get('passphrase')
+    # If javascript hashed password, we have "hash::<hex>"
+    # Else just password
 
     try:
         if not (username and passphrase):
             raise ValidationError('Username and passphrase are required')
 
-        if isinstance(passphrase, six.binary_type) and passphrase[0] == b'\x04'[0]:
-            pubkey = passphrase
-        else:
-            pubkey = ecc.private(str(passphrase), (str(username), "ZERO"), kdf=kdf).get_pubkey()
-
-        db._storage.add_user(username, pubkey)
+        with admin_db.transaction() as conn:
+            admin = zerodb.permissions.base.get_admin(conn)
+            if passphrase.startswith("hash::"):
+                passphrase = bytes.fromhex(passphrase[6:])
+                admin.add_user(username, password=passphrase, security=nohashing)
+            else:
+                admin.add_user(username, password=passphrase)
 
     except ConflictError:
         raise
