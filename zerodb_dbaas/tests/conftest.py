@@ -1,7 +1,9 @@
 import pytest
 import transaction
 
-from zerodb.testing import *
+# Explicit import from testing makes fixtures out of them
+from zerodb.testing import (
+        db, admin_db, zeo_server, tempdir)
 
 
 @pytest.fixture(scope="function")
