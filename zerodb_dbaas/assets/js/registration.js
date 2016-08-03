@@ -19,9 +19,9 @@ $(document).ready(function() {
             var salt = username + "|" + appname + "|key";
 
             scrypt(password, salt, 14, 8, 32, 5000, function(out) {
-                var hash = sjcl.bn.fromBits(
-                    sjcl.codec.bytes.toBits(out));
+                var hash = sjcl.codec.hex.fromBits(sjcl.codec.bytes.toBits(out));
                 hash = sjcl.codec.hex.fromBits(sjcl.hash.sha256.hash(hash + 'auth'));
+                hash = 'hash::' + hash;
                 $("#inputPassword").val(hash);
                 if (password2 != null) {
                     $("#inputPasswordConfirmation").val(hash);
