@@ -1,6 +1,5 @@
-var curve = sjcl.ecc.curves['k256'];  // secp256k1
 var submitting = false;
-var realm = "ZERO";
+var appname = "zerodb.com";
 
 $(document).ready(function() {
     $("form").submit(function() {
@@ -13,19 +12,19 @@ $(document).ready(function() {
         }
 
         if (!submitting) {
+            // Same algorithm as in zerodb.crypto.kdf
+            // hash = sha256(scrypt(password, salt) + 'auth')
+
             var username = $("#inputEmail").val();
-            var salt = username + "|" + realm;
+            var salt = username + "|" + appname + "|key";
 
             scrypt(password, salt, 14, 8, 32, 5000, function(out) {
-                var priv = sjcl.bn.fromBits(
+                var hash = sjcl.bn.fromBits(
                     sjcl.codec.bytes.toBits(out));
-                var raw_pub = curve.G.mult(priv);
-                var pub = new sjcl.ecc.ecdsa.publicKey(curve, raw_pub)
-                    .serialize()
-                    .point;
-                $("#inputPassword").val(pub);
+                hash = sjcl.codec.hex.fromBits(sjcl.hash.sha256.hash(hash + 'auth'));
+                $("#inputPassword").val(hash);
                 if (password2 != null) {
-                    $("#inputPasswordConfirmation").val(pub);
+                    $("#inputPasswordConfirmation").val(hash);
                 }
                 submitting = true;
                 $("form").submit();
