@@ -1,3 +1,4 @@
+import mock
 import re
 import six
 
@@ -21,7 +22,9 @@ def test_register_happy_path(testapp):
     )
 
     # Submit the registration form
-    response = testapp.post('/register', form)
+    m = mock.Mock()
+    with mock.patch('requests.post', side_effect=m):
+        response = testapp.post('/register', form)
     assert response.status_code == 302
     assert response.content_type == 'text/plain'
 
@@ -29,7 +32,7 @@ def test_register_happy_path(testapp):
     response = testapp.get(response.location)
     assert response.status_code == 200
     assert response.content_type == 'text/html'
-    assert b'Confirmation Email' in response.body, response.body
+    assert b'Registration submitted' in response.body, response.body
 
     # Follow link to the confirmation page
     match = re.search(br'<a href="(.*)"', response.body)
@@ -52,7 +55,11 @@ def test_register_happy_path_json(testapp):
         inputPassword='hash::' + '1a' * 64,
         inputPasswordConfirmation='hash::' + '1a' * 64,
     )
-    response = testapp.post_json('/_register', form)
+
+    m = mock.Mock()
+    with mock.patch('requests.post', side_effect=m):
+        response = testapp.post_json('/_register', form)
+
     assert response.status_code == 200
     assert response.content_type == 'application/json'
     assert response.json_body.get('ok') == 1, response.json_body
