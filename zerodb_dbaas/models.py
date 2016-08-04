@@ -30,4 +30,4 @@ class UserRegistration(Model):
     # also have password_hash (not indexed)
 
     def __repr__(self):
-        return "<UserRegistration %s>" % (self.username,)
+        return "<UserRegistration %s>" % (self.email,)
