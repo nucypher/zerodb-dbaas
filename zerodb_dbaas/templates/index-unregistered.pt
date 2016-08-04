@@ -43,8 +43,8 @@ body {
             <div class="inner">
               <nav>
                 <ul class="masthead-nav">
-                  <li><a href="/register.html">Register</a></li>
-                  <li><a href="/login.html">Login</a></li>
+		  <li><a href="${ request.route_url('register') }">Register</a></li>
+                  <li><a href="${ request.route_url('login') }">Login</a></li>
                 </ul>
               </nav>
             </div>
@@ -54,7 +54,7 @@ body {
             <h1 class="cover-heading">ZeroDB as a Service</h1>
             <p class="lead">Build end-to-end encrypted applications with best-in-class security and privacy guarantees.</p>
             <p class="lead">
-              <a href="/register.html" class="btn btn-lg btn-pill btn-primary">Get started</a>
+              <a href="${ request.route_url('register') }" class="btn btn-lg btn-pill btn-primary">Get started</a>
             </p>
           </div>
 
