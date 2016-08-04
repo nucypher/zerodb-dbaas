@@ -42,17 +42,17 @@ def test_register_happy_path(testapp):
     assert b'Registration submitted' in response.body, response.body
 
     # Follow link to the confirmation page
-    match = re.search(br'<a href="(.*)"', response.body)
-    assert match, response.body
-    response = testapp.get(decode(match.group(1)))
-    assert response.status_code == 302
-    assert response.content_type == 'text/plain'
+    # match = re.search(br'<a href="(.*)"', response.body)
+    # assert match, response.body
+    # response = testapp.get(decode(match.group(1)))
+    # assert response.status_code == 302
+    # assert response.content_type == 'text/plain'
 
     # Perform redirect to the success page
-    response = testapp.get(response.location)
-    assert response.status_code == 200
-    assert response.content_type == 'text/html'
-    assert b'Registration Complete' in response.body, response.body
+    # response = testapp.get(response.location)
+    # assert response.status_code == 200
+    # assert response.content_type == 'text/html'
+    # assert b'Registration Complete' in response.body, response.body
 
 
 def test_register_happy_path_json(testapp):
