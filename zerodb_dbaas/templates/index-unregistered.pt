@@ -51,7 +51,7 @@ body {
           </div>
 
           <div class="inner cover">
-            <h1 class="cover-heading">ZeroDB as a Service</h1>
+            <h1 class="cover-heading">ZeroDB-as-a-Service</h1>
             <p class="lead">Build end-to-end encrypted applications with best-in-class security and privacy guarantees.</p>
             <p class="lead">
               <a href="${ request.route_url('register') }" class="btn btn-lg btn-pill btn-primary">Get started</a>

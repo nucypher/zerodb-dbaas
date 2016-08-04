@@ -40,6 +40,14 @@ def home(request):
     return {}
 
 
+@view_config(
+        route_name='billing-history',
+        renderer='zerodb_dbaas:templates/billing-history.pt',
+        effective_principals=['group:customers'])
+def billing_history(request):
+    """Billing page"""
+    return {}
+
 def do_login(request):
     db = request.dbsession
     form = request.params

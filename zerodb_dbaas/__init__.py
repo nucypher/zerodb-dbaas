@@ -168,6 +168,8 @@ def main(global_config, **settings):
 
     config.add_route('registrations', '/registrations')
 
+    config.add_route('billing-history', '/billing-history')
+
     config.scan(ignore='zerodb_dbaas.tests')
     config.commit()
 

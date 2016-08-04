@@ -41,7 +41,7 @@ body {
 							<button class="nav-toggler nav-toggler-sm sidebar-toggler" type="button" data-toggle="collapse" data-target="#nav-toggleable-sm">
 								<span class="sr-only">Toggle nav</span>
 							</button>
-							<a class="sidebar-brand img-responsive" href="index.html">
+							<a class="sidebar-brand img-responsive" href="${ request.route_url('home') }">
 								<span class="icon icon-lock sidebar-brand-icon">ZeroDB</span>
 							</a>
 						</div>
@@ -56,11 +56,11 @@ body {
 							<ul class="nav nav-pills nav-stacked">
 								<li class="nav-header">Dashboards</li>
 								<li class="active">
-									<a href="index.html">Overview</a>
+									<a href="${ request.route_url('home') }">Overview</a>
 								</li>
 								<li > <a href="docs/index.html">Documentation</a> </li>
 								<li >
-									<a href="billing-history/index.html">Billing history</a>
+									<a href="${ request.route_url('billing-history') }">Billing history</a>
 								</li>
 							</ul>
 							<hr class="visible-xs m-t">
