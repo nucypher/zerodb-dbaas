@@ -1,6 +1,7 @@
 import mock
 import re
 import six
+import time
 
 
 def decode(s):
@@ -27,6 +28,12 @@ def test_register_happy_path(testapp):
         response = testapp.post('/register', form)
     assert response.status_code == 302
     assert response.content_type == 'text/plain'
+
+    time.sleep(0.2)
+    args, kw = m.call_args
+    assert args[0].startswith('http')
+    assert 'auth' in kw
+    assert 'data' in kw
 
     # Perform redirect to the email page
     response = testapp.get(response.location)

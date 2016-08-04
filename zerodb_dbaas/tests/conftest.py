@@ -29,6 +29,8 @@ def testapp(request, db, admin_db):
     from zerodb_dbaas import main
     app = main({}, **{
             'website.secret': '736e743c1b837c2ec8e3c715a5666f35e8c5e0ee55d35df0582d9002cc55a6f9',
+            'mailgun.key': 'dummykey',
+            'mailgun.url': 'https://mail.gun',
             'testdb': db,
             'admin_db': admin_db})
     from webtest import TestApp
