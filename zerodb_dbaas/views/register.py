@@ -126,22 +126,22 @@ def register(request):
 
         db.add(newUser)
 
+        url = request.route_url(
+                'register-email', _query={'hashcode': hashcode})
+        txt = render(
+                'zerodb_dbaas:templates/register-email.txt',
+                {'url': url})
+        send_async(
+                request,
+                from_email='hello@zerodb.com',
+                to=email,
+                subject='ZeroDB registration confirmation',
+                text=txt)
+
         if request.content_type == 'application/json':
             return {'ok': 1, 'hashcode': hashcode}
         else:
-            url = request.route_url(
-                    'register-email', _query={'hashcode': hashcode})
-            txt = render(
-                    'zerodb_dbaas:templates/register-email.txt',
-                    {'url': url})
-            send_async(
-                    request,
-                    from_email='hello@zerodb.com',
-                    to=email,
-                    subject='ZeroDB registration confirmation',
-                    text=txt)
-
-            return HTTPFound(request.route_url('register-email', _query={'hashcode': hashcode}))
+            return HTTPFound(request.route_url('register-checkemail'))
 
     except ValidationError as e:
         return {'ok': 0, 'error': str(e), 'error_type': e.__class__.__name__}
@@ -210,6 +210,13 @@ def register_confirm(request):
         return {'ok': 0, 'error': str(e), 'error_type': e.__class__.__name__}
 
     return {'ok': 0}
+
+
+@view_config(
+        route_name='register-checkemail',
+        renderer='zerodb_dbaas:templates/register-checkemail.pt')
+def register_checkemail(request):
+    return {}
 
 
 @view_config(route_name='register-success', renderer='zerodb_dbaas:templates/register-success.pt')

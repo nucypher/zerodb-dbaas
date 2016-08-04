@@ -1,0 +1,26 @@
+<html lang="en" metal:use-macro="master">
+
+        <title metal:fill-slot="title">
+
+            Check your email!
+
+        </title>
+
+        <div class="container" metal:fill-slot="container">
+            <div class="row">
+                <div class="col-sm-4">
+                </div>
+                <div class="col-sm-4">
+                    <h1>Registration submitted</h1>
+                    <hr class="m-t">
+
+                    <p>Thank you for registering account at ZeroDB!</p>
+                    <p>Check your email to activate it and start using
+                    database-as-a-service</p>
+
+                </div>
+                <div class="col-sm-4">
+                </div>
+            </div>
+        </div>
+</html>
