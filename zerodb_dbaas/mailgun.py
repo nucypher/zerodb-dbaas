@@ -8,6 +8,8 @@ def send(request, **kw):
     """
     api_key = request.registry.settings['mailgun.key']
     api_url = request.registry.settings['mailgun.url']
+    from_email = kw.pop('from_email')
+    kw['from'] = from_email
 
     return requests.post(
             api_url + '/messages',

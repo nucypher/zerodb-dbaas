@@ -6,7 +6,7 @@ from datetime import timedelta
 import zerodb.permissions.base
 
 from pyramid.view import view_config
-from pyramid.renderers import get_renderer
+from pyramid.renderers import (get_renderer, render)
 from pyramid.interfaces import IBeforeRender
 from pyramid.events import subscriber
 from pyramid.httpexceptions import HTTPFound
@@ -129,6 +129,18 @@ def register(request):
         if request.content_type == 'application/json':
             return {'ok': 1, 'hashcode': hashcode}
         else:
+            url = request.route_url(
+                    'register-email', _query={'hashcode': hashcode})
+            txt = render(
+                    'zerodb_dbaas:templates/register-email.txt',
+                    {'url': url})
+            send_async(
+                    request,
+                    from_email='hello@zerodb.com',
+                    to=email,
+                    subject='ZeroDB registration confirmation',
+                    text=txt)
+
             return HTTPFound(request.route_url('register-email', _query={'hashcode': hashcode}))
 
     except ValidationError as e:

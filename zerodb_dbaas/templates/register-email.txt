@@ -1,0 +1,10 @@
+Confirmation Email
+---------------------
+
+Thank you for signing up with ZeroDB!
+
+Please confirm your registration by visiting this URL:
+${url}
+
+Best regards,
+ZeroDB team
