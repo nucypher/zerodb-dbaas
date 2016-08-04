@@ -41,7 +41,7 @@
             <button class="nav-toggler nav-toggler-sm sidebar-toggler" type="button" data-toggle="collapse" data-target="#nav-toggleable-sm">
               <span class="sr-only">Toggle nav</span>
             </button>
-            <a class="sidebar-brand img-responsive" href="../index.html">
+            <a class="sidebar-brand img-responsive" href="${ request.route_url('home') }">
               <span class="icon icon-lock sidebar-brand-icon">ZeroDB</span>
             </a>
           </div>
