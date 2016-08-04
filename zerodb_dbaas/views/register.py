@@ -16,6 +16,7 @@ from pyramid.security import (
     forget,)
 
 from zerodb_dbaas.models import UserRegistration
+from zerodb_dbaas.mailgun import send_async
 
 from .common import (ValidationError, nohashing, decode_password_hex)
 
