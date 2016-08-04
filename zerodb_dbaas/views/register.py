@@ -12,8 +12,7 @@ from pyramid.events import subscriber
 from pyramid.httpexceptions import HTTPFound
 
 from pyramid.security import (
-    remember,
-    forget,)
+    remember, forget)
 
 from zerodb_dbaas.models import UserRegistration
 from zerodb_dbaas.mailgun import send_async
@@ -30,7 +29,12 @@ def globals_factory(event):
 
 @view_config(
         route_name='home',
-        renderer='zerodb_dbaas:templates/index-unregistered.pt')
+        renderer='zerodb_dbaas:templates/index-unregistered.pt',
+        effective_principals=[])
+@view_config(
+        route_name='home',
+        renderer='zerodb_dbaas:templates/index.pt',
+        effective_principals=['group:customers'])
 def home(request):
     """Home page"""
     return {}

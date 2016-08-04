@@ -116,7 +116,8 @@ def get_admin_db(request):
 
 
 def main(global_config, **settings):
-    config = Configurator(settings=settings)
+    config = Configurator(settings=settings,
+                          root_factory='.resources.Root')
 
     # Parse config file settings
     settings = config.registry.settings
@@ -125,11 +126,17 @@ def main(global_config, **settings):
     config.include('pyramid_chameleon')
     config.include('pyramid_tm')
 
+    def authn_callback(user, request):
+        if user:
+            return ['group:customers']
+        else:
+            return []
+
     # Authentication with single security group
     # http://docs.pylonsproject.org/projects/pyramid/en/latest/quick_tutorial/authentication.html
     authn_policy = AuthTktAuthenticationPolicy(
         settings['website.secret'],
-        callback=lambda user: ['group:customers'],
+        callback=authn_callback,
         hashalg='sha512')
     authz_policy = ACLAuthorizationPolicy()
     config.set_authentication_policy(authn_policy)
