@@ -28,7 +28,9 @@ def globals_factory(event):
     event['master'] = master
 
 
-@view_config(route_name='home', renderer='zerodb_dbaas:templates/index.pt')
+@view_config(
+        route_name='home',
+        renderer='zerodb_dbaas:templates/index-unregistered.pt')
 def home(request):
     """Home page"""
     return {}

@@ -1,0 +1,82 @@
+<html lang="en" metal:use-macro="master">
+	<head>
+		<meta charset="utf-8">
+		<meta http-equiv="X-UA-Compatible" content="IE=edge">
+		<meta name="viewport" content="width=device-width, initial-scale=1">
+		<meta name="description" content="">
+		<meta name="keywords" content="">
+		<meta name="author" content="">
+
+		<title metal:fill-slot="title">
+
+			ZeroDB-as-a-Service
+
+		</title>
+
+		<link href="http://fonts.googleapis.com/css?family=Roboto:300,400,500,700,400italic" rel="stylesheet">
+
+		<link href="assets/css/toolkit-inverse.css" rel="stylesheet">
+		<metal:slot fill-slot="styles">
+		<link href="assets/css/cover.css" rel="stylesheet">
+        </metal:slot>
+
+
+		<style>
+/* note: this is a hack for ios iframe for bootstrap themes shopify page */
+/* this chunk of css is not part of the toolkit :) */
+body {
+	width: 1px;
+	min-width: 100%;
+	*width: 100%;
+}
+		</style>
+	</head>
+  <body metal:fill-slot="body">
+
+    <div class="site-wrapper">
+
+      <div class="site-wrapper-inner">
+
+        <div class="cover-container">
+
+          <div class="masthead clearfix">
+            <div class="inner">
+              <nav>
+                <ul class="masthead-nav">
+                  <li><a href="/register.html">Register</a></li>
+                  <li><a href="/login.html">Login</a></li>
+                </ul>
+              </nav>
+            </div>
+          </div>
+
+          <div class="inner cover">
+            <h1 class="cover-heading">ZeroDB as a Service</h1>
+            <p class="lead">Build end-to-end encrypted applications with best-in-class security and privacy guarantees.</p>
+            <p class="lead">
+              <a href="/register.html" class="btn btn-lg btn-default">Get started</a>
+            </p>
+          </div>
+
+            <div class="inner">
+              <p class="lead">Contribute on <a href="https://github.com/zerodb/zerodb">GitHub</a>.</p>
+              <p class="lead">Join the community on <a href="http://slack.zerodb.com/">Slack</a>.</p>
+              <p class="lead">Read the white paper on <a href="https://arxiv.org/abs/1602.07168">arXiv</a>.</p>
+            </div>
+
+        </div>
+
+      </div>
+
+    </div>
+
+    <!-- Bootstrap core JavaScript
+    ================================================== -->
+    <!-- Placed at the end of the document so the pages load faster -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+    <script>window.jQuery || document.write('<script src="assets/js/jquery.min.js"><\/script>')</script>
+    <script src="assets/js/bootstrap.min.js"></script>
+    <!-- IE10 viewport hack for Surface/desktop Windows 8 bug -->
+    <script src="assets/js/ie10-viewport-bug-workaround.js"></script>
+  </body>
+</html>
