@@ -151,7 +151,6 @@ def main(global_config, **settings):
     config.add_route('login', '/login')
     config.add_route('logout', '/logout')
     config.add_route('register', '/register')
-    config.add_route('register-email', '/register-email')
     config.add_route('register-checkemail', '/register-checkemail')
     config.add_route('register-confirm', '/register-confirm')
     config.add_route('register-success', '/register-success')

@@ -127,7 +127,7 @@ def register(request):
         db.add(newUser)
 
         url = request.route_url(
-                'register-email', _query={'hashcode': hashcode})
+                'register-confirm', _query={'hashcode': hashcode})
         txt = render(
                 'zerodb_dbaas:templates/register-email.txt',
                 {'url': url})
@@ -147,16 +147,6 @@ def register(request):
         return {'ok': 0, 'error': str(e), 'error_type': e.__class__.__name__}
 
     return {'ok': 0}
-
-
-@view_config(route_name='register-email', renderer='zerodb_dbaas:templates/register-email.pt')
-def register_email(request):
-    """Send confirmation email"""
-    # FIXME Just shows page for now
-    form = request.params
-
-    hashcode = form.get('hashcode')
-    return {'ok': 1, 'url': request.route_url('register-confirm', _query={'hashcode': hashcode})}
 
 
 @view_config(route_name='register-confirm', renderer='zerodb_dbaas:templates/register-confirm.pt')
