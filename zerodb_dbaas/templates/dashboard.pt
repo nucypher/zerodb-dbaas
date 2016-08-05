@@ -1,0 +1,43 @@
+<html metal:use-macro="master">
+	<div class="row">
+		<div class="col-sm-3 sidebar" metal:fill-slot="navigation">
+			<nav class="sidebar-nav">
+				<div class="sidebar-header">
+					<button class="nav-toggler nav-toggler-sm sidebar-toggler" type="button" data-toggle="collapse" data-target="#nav-toggleable-sm">
+						<span class="sr-only">Toggle nav</span>
+					</button>
+					<a class="sidebar-brand img-responsive" href="${ request.route_url('home') }">
+						<span class="icon icon-lock sidebar-brand-icon">ZeroDB</span>
+					</a>
+				</div>
+
+				<div class="collapse nav-toggleable-sm" id="nav-toggleable-sm">
+					<form class="sidebar-form">
+						<input class="form-control" type="text" placeholder="Search...">
+						<button type="submit" class="btn-link">
+							<span class="icon icon-magnifying-glass"></span>
+						</button>
+					</form>
+					<ul class="nav nav-pills nav-stacked">
+						<li class="nav-header">Dashboards</li>
+						<li class="active">
+							<a href="${ request.route_url('home') }">Overview</a>
+						</li>
+						<li > <a href="docs/index.html">Documentation</a> </li>
+						<li >
+							<a href="${ request.route_url('billing-history') }">Billing history</a>
+						</li>
+					</ul>
+					<hr class="visible-xs m-t">
+				</div>
+			</nav>
+		</div>
+		<metal:slot define-slot="content">
+			Content goes here
+		</metal:slot>
+	</div>
+
+	<metal:slot define-slot="extra">
+		Extra goes here
+	</metal:slot>
+</html>
