@@ -8,10 +8,8 @@
 		<meta name="keywords" content="">
 		<meta name="author" content="">
 
-		<title>
-
-			Instance
-
+		<title metal:fill-slot="title">
+			Instance [${username}]
 		</title>
 
 		<link href="http://fonts.googleapis.com/css?family=Roboto:300,400,500,700,400italic" rel="stylesheet">
@@ -76,7 +74,7 @@ body {
 					<div class="dashhead">
 						<div class="dashhead-titles">
 							<h6 class="dashhead-subtitle">Dashboards</h6>
-							<h2 class="dashhead-title">Instance #1</h2>
+                            <h2 class="dashhead-title">Instance [${username}]</h2>
 						</div>
 					</div>
 
@@ -86,7 +84,7 @@ body {
 
 					<div class="list-group">
 						<a class="list-group-item">
-							<span>Database: ZeroDB v1.0.0</span>
+							<span>Database: ZeroDB v0.99.0</span>
 						</a>
 						<a class="list-group-item">
 							<span>Location: us-east-1 on aws</span>
@@ -96,9 +94,6 @@ body {
 						</a>
 						<a class="list-group-item">
 							<span>Connection: Available</span>
-						</a>
-						<a class="list-group-item">
-							<span>Usage: 1GB of 2GB</span>
 						</a>
 						<a class="list-group-item">
 							<span>Billing: $25.00 per month</span>
@@ -114,7 +109,12 @@ body {
 
 					<div class="list-group">
 						<a class="list-group-item">
-							<span>Command line: db = zerodb.DB(("localhost", 8001), username="root", password=PASSWORD)</span>
+                            <span>Command line:<br>
+                                import zerodb<br>
+                                db = zerodb.DB((
+                                "db.zerodb.com",
+                                8001), username="${username}",
+                                password=YOUR_PASSWORD)</span>
 						</a>
 					</div>
 
@@ -123,11 +123,11 @@ body {
 		</div>
 
 
-		<script src="assets/js/jquery.min.js"></script>
-		<script src="assets/js/chart.js"></script>
-		<script src="assets/js/tablesorter.min.js"></script>
-		<script src="assets/js/toolkit.js"></script>
-		<script src="assets/js/application.js"></script>
+		<script src="/assets/js/jquery.min.js"></script>
+		<script src="/assets/js/chart.js"></script>
+		<script src="/assets/js/tablesorter.min.js"></script>
+		<script src="/assets/js/toolkit.js"></script>
+		<script src="/assets/js/application.js"></script>
 		<script>
 // execute/clear BS loaders for docs
 $(function(){while(window.BS&&window.BS.loader&&window.BS.loader.length){(window.BS.loader.pop())()}})

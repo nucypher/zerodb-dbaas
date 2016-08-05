@@ -1,4 +1,5 @@
 from pyramid.view import view_config
+from pyramid.httpexceptions import HTTPNotFound
 
 
 def manage_databases(request):
@@ -39,4 +40,11 @@ def home(request):
         renderer='zerodb_dbaas:templates/instance.pt',
         effective_principals=['group:customers'])
 def instance(request):
-    return {}
+    username = request.matchdict['name']
+
+    with request.admin_db.transaction() as conn:
+        admin = conn.root()['admin']
+        if username not in admin.users_by_name:
+            raise HTTPNotFound('No such username: %s' % username)
+
+    return {'username': username}
