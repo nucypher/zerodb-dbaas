@@ -15,7 +15,7 @@ requires = [
     'pyramid_chameleon',
     'pyramid_debugtoolbar',
     'pyramid_tm',
-    'zerodb',
+    'zerodb==0.99.0a3',
     'waitress',
     'six',
     ]
