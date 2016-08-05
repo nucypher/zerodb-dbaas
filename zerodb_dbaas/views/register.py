@@ -27,6 +27,10 @@ def globals_factory(event):
     event['master'] = master
 
 
+def manage_databases(requests):
+    return {}
+
+
 @view_config(
         route_name='home',
         renderer='zerodb_dbaas:templates/index-unregistered.pt',
@@ -37,7 +41,10 @@ def globals_factory(event):
         effective_principals=['group:customers'])
 def home(request):
     """Home page"""
-    return {}
+    if request.authenticated_userid:
+        return manage_databases(request)
+    else:
+        return {}
 
 
 @view_config(
@@ -47,6 +54,7 @@ def home(request):
 def billing_history(request):
     """Billing page"""
     return {}
+
 
 def do_login(request):
     db = request.dbsession
