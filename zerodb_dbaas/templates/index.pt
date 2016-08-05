@@ -86,31 +86,12 @@ body {
 							Deployments
 						</h4>
 
-						<a class="list-group-item" href="instance/index.html">
+						<a class="list-group-item"
+                            tal:repeat="db_id db_users"
+                            tal:attributes="href string:instance/${db_id}">
 							<span class="pull-right text-muted">20GB</span>
 							<span class="icon icon-check"> Instance #1
 						</a>
-
-						<a class="list-group-item" href="instance/index.html">
-							<span class="pull-right text-muted">20GB</span>
-							<span class="icon icon-check"> Instance #2
-						</a>
-
-						<a class="list-group-item" href="instance/index.html">
-							<span class="pull-right text-muted">20GB</span>
-							<span class="icon icon-cross"> Instance #3
-						</a>
-
-						<a class="list-group-item" href="instance/index.html">
-							<span class="pull-right text-muted">20GB</span>
-							<span class="icon icon-cross"> Instance #4
-						</a>
-
-						<a class="list-group-item" href="instance/index.html">
-							<span class="pull-right text-muted">20GB</span>
-							<span class="icon icon-check"> Instance #5
-						</a>
-
 					</div>
 					<a href="#" class="btn btn-primary-outline p-x">View all deployments</a>
 				</div>
