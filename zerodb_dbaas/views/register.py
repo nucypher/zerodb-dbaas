@@ -26,6 +26,10 @@ def globals_factory(event):
     master = get_renderer('zerodb_dbaas:templates/master.pt').implementation()
     event['master'] = master
 
+    """Provide dashboard template"""
+    dashboard = get_renderer('zerodb_dbaas:templates/dashboard.pt').implementation()
+    event['dashboard'] = dashboard
+
 
 @view_config(
         route_name='billing-history',

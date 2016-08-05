@@ -7,7 +7,7 @@
 		<meta name="viewport" content="width=device-width, initial-scale=1">
 		<meta name="description" content="">
 		<meta name="keywords" content="">
-		<meta name="author" content="">
+		<meta name="author" content="ZeroDB, Inc.">
 
 		<title metal:define-slot="title">
 			Title goes here
@@ -24,7 +24,7 @@
 		<style>
 /* note: this is a hack for ios iframe for bootstrap themes shopify page */
 /* this chunk of css is not part of the toolkit :) */
-body {
+body {	
 	width: 1px;
 	min-width: 100%;
 	*width: 100%;
@@ -36,6 +36,9 @@ body {
 	<body metal:define-slot="body">
 		<div class="container" metal:define-slot="container">
 			<div class="row">
+				<metal:slot define-slot="navigation">
+					Navigation goes here
+				</metal:slot>
 				<metal:slot define-slot="content">
 					Content goes here
 				</metal:slot>

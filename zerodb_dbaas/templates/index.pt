@@ -1,201 +1,121 @@
-<html lang="en" metal:use-macro="master">
-	<head>
-		<meta charset="utf-8">
-		<meta http-equiv="X-UA-Compatible" content="IE=edge">
-		<meta name="viewport" content="width=device-width, initial-scale=1">
-		<meta name="description" content="">
-		<meta name="keywords" content="">
-		<meta name="author" content="">
+<html lang="en" metal:use-macro="dashboard">
+	<title metal:fill-slot="title">
+		Overview
+	</title>
 
-		<title metal:fill-slot="title">
+	<div metal:fill-slot="content" class="col-sm-9 content">
+		<div class="dashhead">
+			<div class="dashhead-titles">
+				<h6 class="dashhead-subtitle">Dashboards</h6>
+				<h2 class="dashhead-title">Overview</h2>
+			</div>
 
-			Overview
-
-		</title>
-
-		<link href="http://fonts.googleapis.com/css?family=Roboto:300,400,500,700,400italic" rel="stylesheet">
-
-		<link href="assets/css/toolkit-inverse.css" rel="stylesheet">
-
-
-		<link href="assets/css/application.css" rel="stylesheet">
-
-		<style>
-/* note: this is a hack for ios iframe for bootstrap themes shopify page */
-/* this chunk of css is not part of the toolkit :) */
-body {
-	width: 1px;
-	min-width: 100%;
-	*width: 100%;
-}
-		</style>
-	</head>
-
-
-	<body>
-		<div class="container" metal:fill-slot="container">
-			<div class="row">
-				<div class="col-sm-3 sidebar">
-					<nav class="sidebar-nav">
-						<div class="sidebar-header">
-							<button class="nav-toggler nav-toggler-sm sidebar-toggler" type="button" data-toggle="collapse" data-target="#nav-toggleable-sm">
-								<span class="sr-only">Toggle nav</span>
-							</button>
-							<a class="sidebar-brand img-responsive" href="${ request.route_url('home') }">
-								<span class="icon icon-lock sidebar-brand-icon">ZeroDB</span>
-							</a>
-						</div>
-
-						<div class="collapse nav-toggleable-sm" id="nav-toggleable-sm">
-							<form class="sidebar-form">
-								<input class="form-control" type="text" placeholder="Search...">
-								<button type="submit" class="btn-link">
-									<span class="icon icon-magnifying-glass"></span>
-								</button>
-							</form>
-							<ul class="nav nav-pills nav-stacked">
-								<li class="nav-header">Dashboards</li>
-								<li class="active">
-									<a href="${ request.route_url('home') }">Overview</a>
-								</li>
-								<li > <a href="docs/index.html">Documentation</a> </li>
-								<li >
-									<a href="${ request.route_url('billing-history') }">Billing history</a>
-								</li>
-							</ul>
-							<hr class="visible-xs m-t">
-						</div>
-					</nav>
-				</div>
-				<div class="col-sm-9 content">
-					<div class="dashhead">
-						<div class="dashhead-titles">
-							<h6 class="dashhead-subtitle">Dashboards</h6>
-							<h2 class="dashhead-title">Overview</h2>
-						</div>
-
-						<div class="btn-toolbar dashhead-toolbar">
-							<button type="button" class="btn btn-lg btn-pill btn-primary" data-toggle="modal" data-target="#instanceModal"><span class="icon icon-database"> Launch instance</span></button>
-						</div>
-					</div>
-
-					<hr class="m-t">
-
-					<div class="list-group">
-						<h4 class="list-group-header">
-							Deployments
-						</h4>
-
-						<a class="list-group-item"
-                            tal:repeat="db_id db_users"
-                            tal:attributes="href string:instance/${db_id}">
-							<span class="pull-right text-muted">20GB</span>
-							<span class="icon icon-check"> Instance #1
-						</a>
-					</div>
-					<a href="#" class="btn btn-primary-outline p-x">View all deployments</a>
-				</div>
+			<div class="btn-toolbar dashhead-toolbar">
+				<button type="button" class="btn btn-lg btn-pill btn-primary" data-toggle="modal" data-target="#instanceModal"><span class="icon icon-database"> Launch instance</span></button>
 			</div>
 		</div>
 
-		<metal:slot fill-slot="extra">
-			<div id="instanceModal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="instanceModalLabel">
-				<div class="modal-dialog">
-					<div class="modal-content">
+		<hr class="m-t">
 
-						<div class="modal-header">
-							<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-							<h4 class="modal-title" id="instanceModalLabel">Choose your instance</h4>
-							<p>All instances are t2.large running on AWS</p>
-						</div>
-						<div class="modal-body">
-							<div class="row statcards">
-								<div class="col-sm-12 col-lg-4 m-b">
-									<div class="statcard statcard-success">
-										<div class="p-a">
-											<span class="statcard-desc">2GB</span>
-											<h2 class="statcard-number">
-												$25
-											</h2>
-											<span class="statcard-desc">per month</span>
-											<form action="/create_2gb_instance" method="POST" data-dismiss="modal">
-											  <script
-											    src="https://checkout.stripe.com/checkout.js" class="stripe-button"
-											    data-key="pk_test_a5PvmhImTHCrmhz852eOWS6l"
-											    data-amount="2500"
-											    data-name="ZeroDB, Inc."
-											    data-description="2GB subscription"
-											    data-image="../assets/img/zerodb.svg"
-											    data-locale="auto"
-											    data-zip-code="true">
-											  </script>
-											</form>
-										</div>
-									</div>
-								</div>
-								<div class="col-sm-12 col-lg-4 m-b">
-									<div class="statcard statcard-danger">
-										<div class="p-a">
-											<span class="statcard-desc">4GB</span>
-											<h2 class="statcard-number">
-												$40
-											</h2>
-											<span class="statcard-desc">per month</span>
-											<form action="/create_4gb_instance" method="POST" data-dismiss="modal">
-											  <script
-											    src="https://checkout.stripe.com/checkout.js" class="stripe-button"
-											    data-key="pk_test_a5PvmhImTHCrmhz852eOWS6l"
-											    data-amount="4000"
-											    data-name="ZeroDB, Inc."
-											    data-description="4GB subscription"
-											    data-image="../assets/img/zerodb.svg"
-											    data-locale="auto"
-											    data-zip-code="true">
-											  </script>
-											</form>
-										</div>
-									</div>
-								</div>
-								<div class="col-sm-12 col-lg-4 m-b">
-									<div class="statcard statcard-info">
-										<div class="p-a">
-											<span class="statcard-desc">8GB</span>
-											<h2 class="statcard-number">
-												$70
-											</h2>
-											<span class="statcard-desc">per month</span>
-											<form action="/create_8gb_instance" method="POST" data-dismiss="modal">
-											  <script
-											    src="https://checkout.stripe.com/checkout.js" class="stripe-button"
-											    data-key="pk_test_a5PvmhImTHCrmhz852eOWS6l"
-											    data-amount="7000"
-											    data-name="ZeroDB, Inc."
-											    data-description="8GB subscription"
-											    data-image="../assets/img/zerodb.svg"
-											    data-locale="auto"
-											    data-zip-code="true">
-											  </script>
-											</form>
-										</div>
-									</div>
+		<div class="list-group">
+			<h4 class="list-group-header">
+				Deployments
+			</h4>
+
+			<a class="list-group-item"
+tal:repeat="db_id db_users"
+tal:attributes="href string:instance/${db_id}">
+				<span class="pull-right text-muted">20GB</span>
+				<span class="icon icon-check"> Instance #1
+			</a>
+		</div>
+		<a href="#" class="btn btn-primary-outline p-x">View all deployments</a>
+	</div>
+
+	<div metal:fill-slot="extra" id="instanceModal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="instanceModalLabel">
+		<div class="modal-dialog">
+			<div class="modal-content">
+
+				<div class="modal-header">
+					<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+					<h4 class="modal-title" id="instanceModalLabel">Choose your instance</h4>
+					<p>All instances are t2.large running on AWS</p>
+				</div>
+				<div class="modal-body">
+					<div class="row statcards">
+						<div class="col-sm-12 col-lg-4 m-b">
+							<div class="statcard statcard-success">
+								<div class="p-a">
+									<span class="statcard-desc">2GB</span>
+									<h2 class="statcard-number">
+										$25
+									</h2>
+									<span class="statcard-desc">per month</span>
+									<form action="/create_2gb_instance" method="POST" data-dismiss="modal">
+									  <script
+									    src="https://checkout.stripe.com/checkout.js" class="stripe-button"
+									    data-key="pk_test_a5PvmhImTHCrmhz852eOWS6l"
+									    data-amount="2500"
+									    data-name="ZeroDB, Inc."
+									    data-description="2GB subscription"
+									    data-image="assets/img/zerodb.svg"
+									    data-locale="auto"
+									    data-zip-code="true">
+									  </script>
+									</form>
 								</div>
 							</div>
-
+						</div>
+						<div class="col-sm-12 col-lg-4 m-b">
+							<div class="statcard statcard-danger">
+								<div class="p-a">
+									<span class="statcard-desc">4GB</span>
+									<h2 class="statcard-number">
+										$40
+									</h2>
+									<span class="statcard-desc">per month</span>
+									<form action="/create_4gb_instance" method="POST" data-dismiss="modal">
+									  <script
+									    src="https://checkout.stripe.com/checkout.js" class="stripe-button"
+									    data-key="pk_test_a5PvmhImTHCrmhz852eOWS6l"
+									    data-amount="4000"
+									    data-name="ZeroDB, Inc."
+									    data-description="4GB subscription"
+									    data-image="assets/img/zerodb.svg"
+									    data-locale="auto"
+									    data-zip-code="true">
+									  </script>
+									</form>
+								</div>
+							</div>
+						</div>
+						<div class="col-sm-12 col-lg-4 m-b">
+							<div class="statcard statcard-info">
+								<div class="p-a">
+									<span class="statcard-desc">8GB</span>
+									<h2 class="statcard-number">
+										$70
+									</h2>
+									<span class="statcard-desc">per month</span>
+									<form action="/create_8gb_instance" method="POST" data-dismiss="modal">
+									  <script
+									    src="https://checkout.stripe.com/checkout.js" class="stripe-button"
+									    data-key="pk_test_a5PvmhImTHCrmhz852eOWS6l"
+									    data-amount="7000"
+									    data-name="ZeroDB, Inc."
+									    data-description="8GB subscription"
+									    data-image="assets/img/zerodb.svg"
+									    data-locale="auto"
+									    data-zip-code="true">
+									  </script>
+									</form>
+								</div>
+							</div>
 						</div>
 					</div>
+
 				</div>
 			</div>
-		</metal:slot>
-
-		<script src="assets/js/jquery.min.js"></script>
-		<script src="assets/js/chart.js"></script>
-		<script src="assets/js/tablesorter.min.js"></script>
-		<script src="assets/js/toolkit.js"></script>
-		<script src="assets/js/application.js"></script>
-		<script>
-// execute/clear BS loaders for docs
-$(function(){while(window.BS&&window.BS.loader&&window.BS.loader.length){(window.BS.loader.pop())()}})
-		</script>
-
-	</body>
+		</div>
+	</div>
 </html>
