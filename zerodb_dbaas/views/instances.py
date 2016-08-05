@@ -32,3 +32,11 @@ def home(request):
         return manage_databases(request)
     else:
         return {}
+
+
+@view_config(
+        route_name='instance',
+        renderer='zerodb_dbaas:templates/instance.pt',
+        effective_principals=['group:customers'])
+def instance(request):
+    return {}
