@@ -27,8 +27,21 @@ def globals_factory(event):
     event['master'] = master
 
 
-def manage_databases(requests):
-    return {}
+def manage_databases(request):
+    db_users = []
+    email = request.authenticated_userid
+
+    with request.admin_db.transaction() as conn:
+        admin = conn.root()['admin']
+        db_users_it = iter(admin.users_by_name.keys(email))
+        while True:
+            next_email = next(db_users_it)
+            if next_email.startswith(email):
+                db_users.append(next_email)
+            else:
+                break
+
+    return {'db_users': db_users}
 
 
 @view_config(
