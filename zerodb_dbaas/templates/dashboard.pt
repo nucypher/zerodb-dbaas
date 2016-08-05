@@ -13,12 +13,14 @@
 
 				<div class="collapse nav-toggleable-sm" id="nav-toggleable-sm">
 					<ul class="nav nav-pills nav-stacked">
-						<li class="nav-header">Dashboards</li>
-						<li class="active">
+						<li tal:attributes="class 'active' if request.matched_route.name == 'home'
+											or request.matched_route.name == 'instance' else None">
 							<a href="${ request.route_url('home') }">Overview</a>
 						</li>
-						<li > <a href="docs/index.html">Documentation</a> </li>
-						<li >
+						<li tal:attributes="class 'active' if request.matched_route.name == 'documentation' else None">
+							<a href="${ request.route_url('documentation') }">Documentation</a>
+						</li>
+						<li tal:attributes="class 'active' if request.matched_route.name == 'billing-history' else None">
 							<a href="${ request.route_url('billing-history') }">Billing history</a>
 						</li>
 					</ul>

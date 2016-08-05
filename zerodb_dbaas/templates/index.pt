@@ -29,7 +29,6 @@ tal:attributes="href string:instance/${db_id}">
 				<span class="icon icon-check"> Instance #1
 			</a>
 		</div>
-		<a href="#" class="btn btn-primary-outline p-x">View all deployments</a>
 	</div>
 
 	<div metal:fill-slot="extra" id="instanceModal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="instanceModalLabel">

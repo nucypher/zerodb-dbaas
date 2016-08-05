@@ -145,10 +145,6 @@ def main(global_config, **settings):
     config.add_request_method(session_factory, 'dbsession', reify=True)
     config.add_request_method(get_admin_db, 'admin_db', reify=True)
 
-    config.add_static_view('static', 'static', cache_max_age=3600)
-    config.add_route('count', '/count')
-    config.add_route('count_json', '/count.json')
-
     config.add_route('_add_user', '/_add_user')
     config.add_route('_del_user', '/_del_user')
     config.add_route('_edit_user', '/_edit_user')
@@ -171,6 +167,8 @@ def main(global_config, **settings):
     config.add_route('registrations', '/registrations')
 
     config.add_route('billing-history', '/billing-history')
+
+    config.add_route('documentation', '/documentation')
 
     config.scan(ignore='zerodb_dbaas.tests')
     config.commit()

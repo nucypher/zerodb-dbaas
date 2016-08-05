@@ -1,0 +1,19 @@
+<html lang="en" metal:use-macro="dashboard">
+	<title metal:fill-slot="title">
+		Documentation
+	</title>
+	<div metal:fill-slot="content" class="col-sm-9 content">
+		<div class="dashhead">
+			<div class="dashhead-titles">
+				<h6 class="dashhead-subtitle">Dashboard</h6>
+				<h2 class="dashhead-title">Documentation</h2>
+			</div>
+		</div>
+
+		<div class="hr-divider m-t-md m-b">
+			<h3 class="hr-divider-content hr-divider-heading">Documentation</h3>
+		</div>
+
+	</div>
+</html>
+
