@@ -1,4 +1,7 @@
 <html lang="en" metal:use-macro="dashboard">
+	<title metal:fill-slot="title">
+		Billing History
+	</title>
 	<div metal:fill-slot="content" class="col-sm-9 content">
 		<div class="dashhead">
 			<div class="dashhead-titles">

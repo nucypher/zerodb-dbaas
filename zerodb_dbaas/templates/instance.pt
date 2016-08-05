@@ -1,9 +1,12 @@
 <html lang="en" metal:use-macro="dashboard">
+	<title metal:fill-slot="title">
+		Instance ${username}
+	</title>
 	<div metal:fill-slot="content" class="col-sm-9 content">
 		<div class="dashhead">
 			<div class="dashhead-titles">
 				<h6 class="dashhead-subtitle">Dashboards</h6>
-				<h2 class="dashhead-title">Instance [${username}]</h2>
+				<h2 class="dashhead-title">Instance ${username}</h2>
 			</div>
 		</div>
 
