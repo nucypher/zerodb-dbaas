@@ -52,13 +52,13 @@ def do_login(request):
 
         user = db[UserRegistration].query(email=email)
         if not user:
-            raise ValidationError('No user with such email')
+            raise ValidationError('Email and/or password do not match')
         user = user[0]
 
         password_hash = decode_password_hex(password)
 
         if getattr(user, 'password_hash', None) != password_hash:
-            raise ValidationError("Password doesn't match")
+            raise ValidationError("Email and/or password do not match")
 
         # All good
         headers = remember(request, email)
