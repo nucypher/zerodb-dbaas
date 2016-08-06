@@ -42,13 +42,17 @@ tal:attributes="href string:instance/${db_id}">
 						<p>Do not lose your password. If you do, there is no way to recover it.</p>
 					</div>
 					<div class="modal-body">
-						<form action="/create_instance" method="POST">
+						<form method="POST">
 							<div class="form-group">
 								<label for="inputPassword">Create unique instance password</label>
 								<input type="password" placeholder="Password" class="form-control" id="inputPassword" name="inputPassword">
 							</div>
 							<div class="form-group">
-								<input type="submit" class="btn btn-default-outline" value=">>" />
+								<label for="inputPasswordConfirmation">Confirm password</label>
+								<input type="password" placeholder="Password" class="form-control" id="inputPasswordConfirmation" name="inputPasswordConfirmation">
+							</div>
+							<div class="form-group">
+								<input type="submit" class="btn btn-default-outline" value=">>" data-dismiss="modal" data-toggle="modal" data-target="#stripeModal"/>
 							</div>
 						</form>
 					</div>
