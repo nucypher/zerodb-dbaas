@@ -41,12 +41,14 @@
 
 		<div class="list-group">
 			<a class="list-group-item">
-				<span>Command line:<br>
-					import zerodb<br>
-					db = zerodb.DB((
-					"db.zerodb.com",
-					8001), username="${username}",
-					password=YOUR_PASSWORD)</span>
+				<p>Command line:</p>
+				<pre><code>
+<span style="color:#11a611">>>></span> <span style="color:#008700">import</span> <span style="color:#0086D7">zerodb</span>
+<span style="color:#11a611">>>></span> db = zerodb.DB(
+	(<span style="color:#AE5E00">"db.zerodb.com"</span>, <span style="color:#008700">8001</span>),
+	username=<span style="color:#AE5E00">"${username}"</span>,
+	password=<span style="color:#AE5E00">YOUR_PASSWORD</span>)
+				</code></pre>
 			</a>
 		</div>
 
