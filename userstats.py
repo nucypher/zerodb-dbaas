@@ -17,8 +17,10 @@ USERNAME = 'root'
 PASSWORD = '123'
 
 ####################
+print('Collecting stats...')
 stats = userstats(DB_FILENAME)  # in format (user_id, username, bytes)
 
+print('Saving to database...')
 h, _ = kdf.hash_password(
         USERNAME, PASSWORD,
         key_file=None, cert_file=None, appname='zerodb.com', key=None)

@@ -1,5 +1,6 @@
 from pyramid.view import view_config
 from pyramid.httpexceptions import HTTPNotFound
+from zerodb_dbaas.views.common import humansize
 
 
 def manage_databases(request):
@@ -47,4 +48,9 @@ def instance(request):
         if username not in admin.users_by_name:
             raise HTTPNotFound('No such username: %s' % username)
 
-    return {'username': username}
+        size = 0
+        if hasattr(admin, 'user_stats'):
+            if username in admin.user_stats:
+                size = admin.user_stats[username]
+
+    return {'username': username, 'size': humansize(size)}

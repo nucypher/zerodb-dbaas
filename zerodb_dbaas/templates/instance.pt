@@ -19,7 +19,7 @@
 				<span>Database: ZeroDB v0.99.0</span>
 			</a>
 			<a class="list-group-item">
-				<span>Location: us-east-1 on aws</span>
+				<span>Location: Oregon, USA</span>
 			</a>
 			<a class="list-group-item">
 				<span>Status: Healthy</span>
@@ -27,11 +27,14 @@
 			<a class="list-group-item">
 				<span>Connection: Available</span>
 			</a>
+            <a class="list-group-item">
+                <span>Usage: ${size} of 2 GB</span>
+            </a>
 			<a class="list-group-item">
 				<span>Billing: $25.00 per month</span>
 			</a>
 			<a class="list-group-item">
-				<span>Storage Volume: Elastic Block Store</span>
+				<span>Storage Volume: SSD</span>
 			</a>
 		</div>
 
