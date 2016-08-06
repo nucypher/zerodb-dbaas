@@ -71,7 +71,7 @@
 					<p>WARNING: This action is irrevocable!</p>
 				</div>
 				<div class="modal-body">
-					<form method="post">
+					<form method="post" action="${ request.route_url('remove_subdb', name=username) }">
 						<div class="form-group">
 							<label for="deleteConfirm">Type DELETE to confirm</label>
 							<input type="text" placeholder="Type DELETE" class="form-control" id="deleteConfirm" name="deleteConfirm">
