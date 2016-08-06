@@ -2,12 +2,6 @@ from zerodb.models import Model, Field
 
 
 def make_app(db):
-    num = len(db[Counter])
-    if num < 1:
-        c = Counter(name='root', count=0)
-        db.add(c)
-        import transaction
-        transaction.commit()
     return db
 
 

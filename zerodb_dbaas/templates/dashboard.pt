@@ -23,6 +23,9 @@
 						<li tal:attributes="class 'active' if request.matched_route.name == 'billing-history' else None">
 							<a href="${ request.route_url('billing-history') }">Billing history</a>
 						</li>
+						<li>
+							<a href="${ request.route_url('logout') }">Logout</a>
+						</li>
 					</ul>
 					<hr class="visible-xs m-t">
 				</div>
