@@ -14,6 +14,269 @@
 			<h3 class="hr-divider-content hr-divider-heading">Documentation</h3>
 		</div>
 
+		<div class="section" id="overview">
+			<p>ZeroDB is an end-to-end encrypted database. It is based on
+			<a class="reference external" href="http://en.wikipedia.org/wiki/Zope_Object_Database">ZODB</a> and written in
+			<a class="reference external" href="https://www.python.org/">Python</a>.</p>
+			<p>In ZeroDB, the client is responsible for the database logic. Data encryption,
+			decryption, and compression also happen client side. Therefore, the server
+			never has any knowledge about the data, its structure, or its order.</p>
+			<p>Clients also have an adjustable cache which stores the most used parts of data
+			structures and greatly speeds up queries even when its size is small (e.g. 1
+			megabyte).</p>
+			<p>From a developer&#8217;s perspective, ZeroDB&#8217;s design is greatly inspired by the <a class="reference external" href="https://djangoproject.com">Django</a> ORM and <a class="reference external" href="http://www.sqlalchemy.org/">SQLAlchemy</a>.</p>
+		</div>
+
+		<div class="section" id="installation">
+			<h3>Installation</h3>
+			<p>We supply ZeroDB as a Python Package <code class="docutils literal"><span class="pre">zerodb-0.97</span></code>, installable via <code class="docutils literal"><span class="pre">pip</span></code>.</p>
+			<p>To run the server and test scripts, clone the <code class="docutils literal"><span class="pre">zerodb-server</span></code> repository,
+			navigate to the resulting directory and (optionally) create a virtual environment:</p>
+			<div class="highlight-python"><div class="highlight"><pre><span class="n">virtualenv</span> <span class="o">.</span><span class="n">demo</span>
+				</pre></div>
+			</div>
+			<p>This creates a fresh virtual environment in the directory <code class="docutils literal"><span class="pre">.demo</span></code>, which you can
+			activate using:</p>
+			<div class="highlight-python"><div class="highlight"><pre><span class="n">source</span> <span class="o">.</span><span class="n">demo</span><span class="o">/</span><span class="nb">bin</span><span class="o">/</span><span class="n">activate</span>
+				</pre></div>
+			</div>
+			<p>Navigate to the <code class="docutils literal"><span class="pre">demo</span></code> directory and install the necessary packages:</p>
+			<div class="highlight-python"><div class="highlight"><pre>pip install -r requirements.txt
+				</pre></div>
+			</div>
+		</div>
+		<div class="section" id="starting-the-zerodb-server-and-creating-users">
+			<h3>Starting the ZeroDB server and creating users</h3>
+			<p>In the <code class="docutils literal"><span class="pre">zerodbext/server</span></code> directory, we supply Python scripts to run a server and
+			manage users.</p>
+			<blockquote>
+				<div><div class="line-block">
+						<div class="line">api.py</div>
+						<div class="line">manage.py</div>
+						<div class="line">run.py</div>
+					</div>
+				</div></blockquote>
+				<div class="section" id="initializing-and-running-the-zerodb-server">
+					<h2>Initializing and Running the ZeroDB server</h2>
+					<p>When you ran <code class="docutils literal"><span class="pre">pip</span> <span class="pre">install</span></code> previously, the following console scripts were created:</p>
+					<div class="highlight-python"><div class="highlight"><pre><span class="n">zerodb</span><span class="o">-</span><span class="n">server</span>
+<span class="n">zerodb</span><span class="o">-</span><span class="n">manage</span>
+<span class="n">zerodb</span><span class="o">-</span><span class="n">api</span>
+						</pre></div>
+					</div>
+					<p>These map to the files in the <code class="docutils literal"><span class="pre">zerodbext/server</span></code> directory.</p>
+					<p>So, to initialize a database, just run <code class="docutils literal"><span class="pre">zerodb-manage</span> <span class="pre">init_db</span></code>.
+					Enter your username (<code class="docutils literal"><span class="pre">root</span></code> by default) and passphrase.</p>
+					<p>This will create the appropriate database file structure and config file
+					<code class="docutils literal"><span class="pre">authdb.conf</span></code> located in the <code class="docutils literal"><span class="pre">demo/conf</span></code> directory. The default administrator
+					user can create and remove other users or change their public keys.
+					However, it doesn&#8217;t know any other user&#8217;s private keys.</p>
+					<p>Run <code class="docutils literal"><span class="pre">zerodb-server</span></code> and you&#8217;ll get the ZeroDB server running on the host specified
+					in the file <code class="docutils literal"><span class="pre">demo/conf/server.zcml</span></code>.</p>
+					<p>Healthy output of the running server appears as follows:</p>
+					<div class="highlight-python"><div class="highlight"><pre>------
+2015-05-16T16:01:53 INFO ZEO.runzeo (6580) opening storage &#39;1&#39; using FileStorage
+------
+2015-05-16T16:01:53 INFO ZEO.StorageServer StorageServer created RW with
+storages: 1:RW:db/db.fs
+------
+2015-05-16T16:01:53 INFO ZEO.StorageServer StorageServer: using auth protocol:
+ecc_auth
+------
+2015-05-16T16:01:53 INFO ZEO.zrpc (6580) listening on (&#39;localhost&#39;, 8001)
+						</pre></div>
+					</div>
+				</div>
+				<div class="section" id="adding-more-users">
+					<h2>Adding more users</h2>
+					<p>Instead of being stored in config files, users are normally stored in a
+					database. In order to manage these users start the zerodb server and open the
+					admin console:</p>
+					<div class="highlight-python"><div class="highlight"><pre>zerodb-manage console
+						</pre></div>
+					</div>
+					<p>This will launch an ipython terminal where you can manage users:</p>
+					<div class="highlight-python"><div class="highlight"><pre>In [1]: useradd(&quot;jamesbond&quot;, &quot;secure password&quot;)
+In [2]: chpass(&quot;jamesbond&quot;, &quot;even more secure password&quot;)
+In [3]: userdel(&quot;jamesbond&quot;)
+						</pre></div>
+					</div>
+					<p>The users you create this way are not administrators and they cannot
+					manage other users.</p>
+					<p>Press <code class="docutils literal"><span class="pre">Ctrl+D</span></code> to exit the ipython terminal when you&#8217;re done.</p>
+				</div>
+		</div>
+		<div class="section" id="using-zerodb-in-python">
+			<h3>Using ZeroDB in Python</h3>
+			<p>Unlike many NoSQL databases, you still define data models in ZeroDB. However,
+			these are only for indexing, and they are dynamically typed. All the fields you
+			define in the data models are indexed, but objects which you store in the database
+			can contain any fields you want (they just won&#8217;t be indexed).</p>
+			<p>Let&#8217;s start by writing a data model in <code class="docutils literal"><span class="pre">demo/models.py</span></code> first:</p>
+			<div class="highlight-python"><div class="highlight"><pre><span class="kn">from</span> <span class="nn">zerodb.models</span> <span class="kn">import</span> <span class="n">Model</span><span class="p">,</span> <span class="n">Field</span><span class="p">,</span> <span class="n">Text</span>
+
+
+<span class="k">class</span> <span class="nc">Employee</span><span class="p">(</span><span class="n">Model</span><span class="p">):</span>
+    <span class="n">name</span> <span class="o">=</span> <span class="n">Field</span><span class="p">()</span>
+    <span class="n">surname</span> <span class="o">=</span> <span class="n">Field</span><span class="p">()</span>
+    <span class="n">description</span> <span class="o">=</span> <span class="n">Text</span><span class="p">()</span>
+    <span class="n">salary</span> <span class="o">=</span> <span class="n">Field</span><span class="p">()</span>
+
+    <span class="k">def</span> <span class="nf">__repr__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+	<span class="k">return</span> <span class="s">&quot;&lt;</span><span class="si">%s</span><span class="s"> </span><span class="si">%s</span><span class="s"> who earns $</span><span class="si">%s</span><span class="s">&gt;&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">name</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">surname</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">salary</span><span class="p">)</span>
+				</pre></div>
+			</div>
+			<p>Let&#8217;s assume the database server we started before is still running. The simplest example
+			which creates records for us would look like this:</p>
+			<div class="highlight-python"><div class="highlight"><pre><span class="kn">import</span> <span class="nn">transaction</span>
+<span class="kn">import</span> <span class="nn">zerodb</span>
+<span class="kn">import</span> <span class="nn">models</span>
+
+<span class="n">db</span> <span class="o">=</span> <span class="n">zerodb</span><span class="o">.</span><span class="n">DB</span><span class="p">((</span><span class="s">&quot;localhost&quot;</span><span class="p">,</span> <span class="mi">8001</span><span class="p">),</span> <span class="n">username</span><span class="o">=</span><span class="s">&quot;root&quot;</span><span class="p">,</span> <span class="n">password</span><span class="o">=</span><span class="s">&quot;&lt;your passphrase&gt;&quot;</span><span class="p">)</span>
+<span class="n">e</span> <span class="o">=</span> <span class="n">models</span><span class="o">.</span><span class="n">Employee</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="s">&quot;John&quot;</span><span class="p">,</span> <span class="n">surname</span><span class="o">=</span><span class="s">&quot;Smith&quot;</span><span class="p">,</span> <span class="n">salary</span><span class="o">=</span><span class="mi">150000</span><span class="p">,</span>
+		    <span class="n">description</span><span class="o">=</span><span class="s">&quot;Coding power&quot;</span><span class="p">)</span>
+<span class="n">db</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">e</span><span class="p">)</span>
+<span class="n">transaction</span><span class="o">.</span><span class="n">commit</span><span class="p">()</span>
+				</pre></div>
+			</div>
+			<p>Now, let&#8217;s do something more advanced and populate the database with random
+			data using the script <code class="docutils literal"><span class="pre">create.py</span></code>:</p>
+			<div class="highlight-python"><div class="highlight"><pre><span class="kn">import</span> <span class="nn">zerodb</span>  <span class="c"># ZeroDB itself</span>
+<span class="kn">import</span> <span class="nn">transaction</span>  <span class="c"># Transaction manager</span>
+<span class="kn">import</span> <span class="nn">models</span>  <span class="c"># ..and our data model</span>
+
+<span class="c"># Also we need to generate some random data</span>
+<span class="kn">import</span> <span class="nn">names</span>
+<span class="kn">import</span> <span class="nn">loremipsum</span>
+<span class="kn">import</span> <span class="nn">random</span>
+
+<span class="n">username</span> <span class="o">=</span> <span class="s">&quot;root&quot;</span>
+<span class="n">passphrase</span> <span class="o">=</span> <span class="s">&quot;very insecure passphrase - never use it&quot;</span>
+
+<span class="n">db</span> <span class="o">=</span> <span class="n">zerodb</span><span class="o">.</span><span class="n">DB</span><span class="p">((</span><span class="s">&quot;localhost&quot;</span><span class="p">,</span> <span class="mi">8001</span><span class="p">),</span> <span class="n">username</span><span class="o">=</span><span class="n">username</span><span class="p">,</span> <span class="n">password</span><span class="o">=</span><span class="n">passphrase</span><span class="p">)</span>
+
+<span class="c"># Everything we record should be within a transaction manager</span>
+<span class="c"># or be ended with transaction.commit()</span>
+<span class="k">with</span> <span class="n">transaction</span><span class="o">.</span><span class="n">manager</span><span class="p">:</span>
+    <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">xrange</span><span class="p">(</span><span class="mi">10000</span><span class="p">):</span>
+	<span class="k">if</span> <span class="p">(</span><span class="n">i</span> <span class="o">%</span> <span class="mi">100</span><span class="p">)</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+	    <span class="c"># Random text generation is slow, so we report</span>
+	    <span class="c"># about progress here</span>
+	    <span class="k">print</span> <span class="n">i</span>
+	<span class="n">e</span> <span class="o">=</span> <span class="n">models</span><span class="o">.</span><span class="n">Employee</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="n">names</span><span class="o">.</span><span class="n">get_first_name</span><span class="p">(),</span>
+			    <span class="n">surname</span><span class="o">=</span><span class="n">names</span><span class="o">.</span><span class="n">get_last_name</span><span class="p">(),</span>
+			    <span class="n">salary</span><span class="o">=</span><span class="n">random</span><span class="o">.</span><span class="n">randrange</span><span class="p">(</span><span class="mi">200000</span><span class="p">),</span>
+			    <span class="n">description</span><span class="o">=</span><span class="n">loremipsum</span><span class="o">.</span><span class="n">get_paragraph</span><span class="p">(),</span>
+			    <span class="n">extra</span><span class="o">=</span><span class="n">loremipsum</span><span class="o">.</span><span class="n">get_sentence</span><span class="p">())</span>
+	<span class="n">db</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">e</span><span class="p">)</span>  <span class="c"># Don&#39;t forget to add created object to the db</span>
+
+    <span class="c"># One special record</span>
+    <span class="n">desc</span> <span class="o">=</span> <span class="s">&quot;&quot;&quot;A theoretical physicist, cosmologist,</span>
+<span class="s">author and Director of Research at the Centre for</span>
+<span class="s">Theoretical Cosmology within the University of Cambridge,</span>
+<span class="s">Stephen William Hawking resides in the United Kingdom.&quot;&quot;&quot;</span>
+    <span class="n">e</span> <span class="o">=</span> <span class="n">models</span><span class="o">.</span><span class="n">Employee</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="s">&quot;Stephen&quot;</span><span class="p">,</span> <span class="n">surname</span><span class="o">=</span><span class="s">&quot;Hawking&quot;</span><span class="p">,</span>
+			<span class="n">salary</span><span class="o">=</span><span class="mi">400000</span><span class="p">,</span>
+			<span class="n">description</span><span class="o">=</span><span class="n">desc</span><span class="p">)</span>
+    <span class="n">db</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">e</span><span class="p">)</span>  <span class="c"># Don&#39;t forget to add created object to the db</span>
+
+<span class="c"># This is not really necessary</span>
+<span class="n">db</span><span class="o">.</span><span class="n">disconnect</span><span class="p">()</span>
+				</pre></div>
+			</div>
+			<p>Let&#8217;s play with that data in the Python terminal (or you can write your own
+			script). We&#8217;ll need to import <code class="docutils literal"><span class="pre">zerodb</span></code> and query operators from
+			<code class="docutils literal"><span class="pre">zerodb.query</span></code> (same syntax as in <a class="reference external" href="http://docs.repoze.org/catalog/usage.html#comparators">repoze</a>):</p>
+			<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span> <span class="nn">zerodb</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">zerodb.query</span> <span class="kn">import</span> <span class="o">*</span>
+				</pre></div>
+			</div>
+			<p>And we also import our data models:</p>
+			<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">models</span> <span class="kn">import</span> <span class="o">*</span>
+				</pre></div>
+			</div>
+			<p>Let&#8217;s connect to the database now:</p>
+			<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="n">PASSWORD</span> <span class="o">=</span> <span class="s">&quot;very insecure passphrase - never use it&quot;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">db</span> <span class="o">=</span> <span class="n">zerodb</span><span class="o">.</span><span class="n">DB</span><span class="p">((</span><span class="s">&quot;localhost&quot;</span><span class="p">,</span> <span class="mi">8001</span><span class="p">),</span> <span class="n">username</span><span class="o">=</span><span class="s">&quot;root&quot;</span><span class="p">,</span> <span class="n">password</span><span class="o">=</span><span class="n">PASSWORD</span><span class="p">)</span>
+				</pre></div>
+			</div>
+			<p>Number of Employees in the database can be determined by just <code class="docutils literal"><span class="pre">len</span></code>:</p>
+			<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="nb">len</span><span class="p">(</span><span class="n">db</span><span class="p">[</span><span class="n">Employee</span><span class="p">])</span>
+<span class="go">10001</span>
+				</pre></div>
+			</div>
+			<p>Let&#8217;s try a range query. Here we search for the name <em>John</em> and select three of
+			the matching items:</p>
+			<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="n">db</span><span class="p">[</span><span class="n">Employee</span><span class="p">]</span><span class="o">.</span><span class="n">query</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="s">&quot;John&quot;</span><span class="p">,</span> <span class="n">limit</span><span class="o">=</span><span class="mi">3</span><span class="p">)</span>
+<span class="go">[&lt;John Aquirre who earns $147944&gt;, &lt;John Gauthier who earns $169040&gt;, &lt;John</span>
+<span class="go">Hefner who earns $25895&gt;]</span>
+				</pre></div>
+			</div>
+			<p>Now, let&#8217;s do another range query and select all <em>Johns</em> who have a salary within
+			a certain range:</p>
+			<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="n">rich_johns</span> <span class="o">=</span> <span class="n">db</span><span class="p">[</span><span class="n">Employee</span><span class="p">]</span><span class="o">.</span><span class="n">query</span><span class="p">(</span><span class="n">InRange</span><span class="p">(</span><span class="s">&quot;salary&quot;</span><span class="p">,</span> <span class="mi">195000</span><span class="p">,</span> <span class="mi">200000</span><span class="p">),</span>
+<span class="go">name=&quot;John&quot;)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">len</span><span class="p">(</span><span class="n">rich_johns</span><span class="p">)</span>
+<span class="go">5</span>
+				</pre></div>
+			</div>
+			<p>We can also do full-text search:</p>
+			<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="n">from_uk</span> <span class="o">=</span> <span class="n">db</span><span class="p">[</span><span class="n">Employee</span><span class="p">]</span><span class="o">.</span><span class="n">query</span><span class="p">(</span><span class="n">Contains</span><span class="p">(</span><span class="s">&quot;description&quot;</span><span class="p">,</span> <span class="s">&quot;United Kingdom&quot;</span><span class="p">))</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">from_uk</span>
+<span class="go">[&lt;Stephen Hawking who earns $400000&gt;]</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="k">print</span> <span class="n">from_uk</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">description</span>
+<span class="go">A theoretical physicist, cosmologist,</span>
+<span class="go">author and Director of Research at the Centre for</span>
+<span class="go">Theoretical Cosmology within the University of Cambridge,</span>
+<span class="go">Stephen William Hawking resides in the United Kingdom.</span>
+				</pre></div>
+			</div>
+			<p>Let&#8217;s remove the record from the last example. We&#8217;ll need the <code class="docutils literal"><span class="pre">transaction</span></code>
+			module for that:</p>
+			<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span> <span class="nn">transaction</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">db</span><span class="o">.</span><span class="n">remove</span><span class="p">(</span><span class="n">from_uk</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">transaction</span><span class="o">.</span><span class="n">commit</span><span class="p">()</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">len</span><span class="p">(</span><span class="n">db</span><span class="p">[</span><span class="n">Employee</span><span class="p">])</span>
+<span class="go">10000</span>
+				</pre></div>
+			</div>
+		</div>
+		<div class="section" id="supported-queries">
+			<h3>Supported Queries</h3>
+			<p>The following comparators can be executed in ZeroDB. Please note that not all of these
+			have been optimized/tested for performance yet.</p>
+			<dl class="docutils">
+				<dt>Contains(index_name, value)</dt>
+				<dd>Contains query.</dd>
+				<dt>Eq(index_name, value)</dt>
+				<dd>Equals query.</dd>
+				<dt>NotEq(index_name, value)</dt>
+				<dd>Not equal query.</dd>
+				<dt>Gt(index_name, value)</dt>
+				<dd>Greater than query.</dd>
+				<dt>Lt(index_name, value)</dt>
+				<dd>Less than query.</dd>
+				<dt>Ge(index_name, value)</dt>
+				<dd>Greater (or equal) query.</dd>
+				<dt>Le(index_name, value)</dt>
+				<dd>Less (or equal) query.</dd>
+				<dt>DoesNotContain(index_name, value)</dt>
+				<dd>Does not contain query</dd>
+				<dt>Any(index_name, value)</dt>
+				<dd>Any of query.</dd>
+				<dt>NotAny(index_name, value)</dt>
+				<dd>Not any of query (ie, None of query)</dd>
+				<dt>All(index_name, value)</dt>
+				<dd>All query.</dd>
+				<dt>NotAll(index_name, value)</dt>
+				<dd>NotAll query.</dd>
+				<dt>InRange(index_name, start, end, start_exclusive=False, end_exclusive=False)</dt>
+				<dd>Index value falls within a range.</dd>
+				<dt>NotInRange(index_name, start, end, start_exclusive=False, end_exclusive=False)</dt>
+				<dd>Index value falls outside a range.</dd>
+			</dl>
+		</div>
+
 	</div>
 </html>
 
