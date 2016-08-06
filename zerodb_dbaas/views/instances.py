@@ -84,7 +84,6 @@ def add_subdb(request):
     else:
         unconfirmed_dbs = user.unconfirmed_dbs
 
-    # Stripe information also needed - let's save in a dict XXX
     unconfirmed_dbs[username] = password_hash
 
     return {'ok': 1}

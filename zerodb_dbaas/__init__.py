@@ -159,6 +159,9 @@ def main(global_config, **settings):
     config.add_route('register-success', '/register-success')
 
     config.add_route('instance', '/instance/{name}')
+    config.add_route('add_subdb', '/instance/add_subdb')
+    config.add_route('confirm_subdb', '/instance/confirm_subdb')
+    config.add_route('remove_subdb', '/instance/remove_subdb')
 
     config.add_route('_register', '/_register')
     config.add_route('_register_confirm', '/_register_confirm')
