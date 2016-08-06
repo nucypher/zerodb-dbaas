@@ -1,10 +1,10 @@
-from persistent.mapping import PersistentMapping
 from pyramid.view import view_config
 from pyramid.httpexceptions import HTTPNotFound
 from zerodb_dbaas.views.common import humansize
 from zerodb_dbaas.models import UserRegistration
+import zerodb.permissions.base
 
-from .common import decode_password_hex
+from .common import decode_password_hex, nohashing
 
 
 def manage_databases(request):
@@ -78,22 +78,32 @@ def add_subdb(request):
     # Also need some stripe things
 
     user = db[UserRegistration].query(email=email)[0]
-    if not hasattr(user, 'unconfirmed_dbs'):
-        unconfirmed_dbs = PersistentMapping()
-        user.unconfirmed_dbs = unconfirmed_dbs
-    else:
-        unconfirmed_dbs = user.unconfirmed_dbs
-
-    unconfirmed_dbs[username] = password_hash
+    user.unconfirmed_db = (username, password_hash)
 
     return {'ok': 1}
 
 
-@view_config(route_name='confirm_subdb', renderer='json')
+@view_config(route_name='confirm_subdb', renderer='json',
+             effective_principals=['group:customers'])
 def confirm_subdb(request):
-    return {}
+    db = request.dbsession
+    admin_db = request.admin_db
+
+    email = request.authenticated_userid
+    user = db[UserRegistration].query(email=email)[0]
+    # XXX call stripe and if it is all good...
+
+    username, password_hash = user.unconfirmed_db
+
+    with admin_db.transaction() as conn:
+        admin = zerodb.permissions.base.get_admin(conn)
+        admin.add_user(username, password=password_hash, security=nohashing)
+
+    user.unconfirmed_db = None
+
+    return {'ok': 1}
 
 
 @view_config(route_name='remove_subdb', renderer='json')
 def remove_subdb(request):
-    return {}
+    return {'ok': 0}
