@@ -106,4 +106,11 @@ def confirm_subdb(request):
 
 @view_config(route_name='remove_subdb', renderer='json')
 def remove_subdb(request):
-    return {'ok': 0}
+    admin_db = request.admin_db
+    username = request.matchdict['name']
+
+    with admin_db.transaction() as conn:
+        admin = zerodb.permissions.base.get_admin(conn)
+        admin.del_user(username)
+
+    return {'ok': 1}
