@@ -133,7 +133,8 @@ def register(request):
         db.add(newUser)
 
         url = request.route_url(
-                'register-confirm', _query={'hashcode': hashcode})
+                'register-confirm', _query={'hashcode': hashcode},
+                _scheme='https')
         txt = render(
                 'zerodb_dbaas:templates/register-email.txt',
                 {'url': url})
