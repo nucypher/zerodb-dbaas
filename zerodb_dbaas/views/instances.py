@@ -133,7 +133,7 @@ def confirm_subdb(request):
 
     user.unconfirmed_db = None
 
-    return HTTPFound(request.route_url('home'))
+    return HTTPFound(request.route_path('home'))
 
 
 @view_config(route_name='remove_subdb', renderer='json')
@@ -159,4 +159,4 @@ def remove_subdb(request):
         subscription.delete()
         del user.subscriptions[username]
 
-    return HTTPFound(request.route_url('home'))
+    return HTTPFound(request.route_path('home'))

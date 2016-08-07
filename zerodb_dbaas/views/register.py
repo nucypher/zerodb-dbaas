@@ -67,7 +67,7 @@ def do_login(request):
         # All good
         headers = remember(request, email)
 
-        return HTTPFound(request.route_url('home'), headers=headers)
+        return HTTPFound(request.route_path('home'), headers=headers)
 
     except (ValidationError, LookupError) as e:
         return {'ok': 0, 'error': str(e), 'error_type': e.__class__.__name__}
@@ -85,7 +85,7 @@ def login(request):
 def logout(request):
     request = request
     headers = forget(request)
-    url = request.route_url('home')
+    url = request.route_path('home')
     return HTTPFound(location=url,
                      headers=headers)
 
@@ -148,7 +148,7 @@ def register(request):
         if request.content_type == 'application/json':
             return {'ok': 1, 'hashcode': hashcode}
         else:
-            return HTTPFound(request.route_url('register-checkemail'))
+            return HTTPFound(request.route_path('register-checkemail'))
 
     except ValidationError as e:
         return {'ok': 0, 'error': str(e), 'error_type': e.__class__.__name__}
