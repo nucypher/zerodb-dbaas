@@ -130,4 +130,4 @@ def remove_subdb(request):
         admin = zerodb.permissions.base.get_admin(conn)
         admin.del_user(username)
 
-    return {'ok': 1}
+    return HTTPFound(request.route_url('home'))
