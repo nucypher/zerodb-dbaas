@@ -102,11 +102,12 @@ def confirm_subdb(request):
 
     # Get the credit card details submitted by the form
     token = request.POST['stripeToken']
+    plan = request.matchdict['plan']
 
     # Create a Customer
     stripe.Customer.create(
       source=token,
-      plan="large",
+      plan=plan,
       email=email
     )
 

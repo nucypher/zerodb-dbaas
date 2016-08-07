@@ -87,13 +87,13 @@ tal:attributes="href string:instance/${db_id}">
 											$25
 										</h2>
 										<span class="statcard-desc">per month</span>
-										<form action="${ request.route_url('confirm_subdb') }" method="POST">
+										<form action="${ request.route_url('confirm_subdb', plan='small') }" method="POST">
 										  <script
 										    src="https://checkout.stripe.com/checkout.js" class="stripe-button"
 										    data-key="pk_test_a5PvmhImTHCrmhz852eOWS6l"
 										    data-amount="2500"
 										    data-name="ZeroDB, Inc."
-										    data-description="2GB subscription"
+										    data-description="small"
 										    data-image="assets/img/zerodb.svg"
 										    data-locale="auto"
 										    data-zip-code="true">
@@ -110,13 +110,13 @@ tal:attributes="href string:instance/${db_id}">
 											$40
 										</h2>
 										<span class="statcard-desc">per month</span>
-										<form action="${ request.route_url('confirm_subdb') }" method="POST">
+										<form action="${ request.route_url('confirm_subdb', plan='medium') }" method="POST">
 										  <script
 										    src="https://checkout.stripe.com/checkout.js" class="stripe-button"
 										    data-key="pk_test_a5PvmhImTHCrmhz852eOWS6l"
 										    data-amount="4000"
 										    data-name="ZeroDB, Inc."
-										    data-description="4GB subscription"
+										    data-description="medium"
 										    data-image="assets/img/zerodb.svg"
 										    data-locale="auto"
 										    data-zip-code="true">
@@ -133,13 +133,13 @@ tal:attributes="href string:instance/${db_id}">
 											$70
 										</h2>
 										<span class="statcard-desc">per month</span>
-										<form action="${ request.route_url('confirm_subdb') }" method="POST">
+										<form action="${ request.route_url('confirm_subdb', plan='large') }" method="POST">
 										  <script
 										    src="https://checkout.stripe.com/checkout.js" class="stripe-button"
 										    data-key="pk_test_a5PvmhImTHCrmhz852eOWS6l"
 										    data-amount="7000"
 										    data-name="ZeroDB, Inc."
-										    data-description="8GB subscription"
+										    data-description="large"
 										    data-image="assets/img/zerodb.svg"
 										    data-locale="auto"
 										    data-zip-code="true">

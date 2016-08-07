@@ -160,7 +160,7 @@ def main(global_config, **settings):
 
     config.add_route('instance', '/instance/{name}')
     config.add_route('add_subdb', '/add_subdb')
-    config.add_route('confirm_subdb', '/confirm_subdb')
+    config.add_route('confirm_subdb', '/confirm_subdb/{plan}')
     config.add_route('remove_subdb', '/remove_subdb/{name}')
 
     config.add_route('_register', '/_register')
