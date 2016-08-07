@@ -2,6 +2,7 @@ from pyramid.view import view_config
 from pyramid.httpexceptions import HTTPNotFound, HTTPFound
 from zerodb_dbaas.views.common import humansize
 from zerodb_dbaas.models import UserRegistration
+from BTrees.OOBTree import OOBTree
 import zerodb.permissions.base
 import stripe
 
@@ -111,13 +112,20 @@ def confirm_subdb(request):
     plan = request.matchdict['plan']
 
     # Create a Customer
-    stripe.Customer.create(
+    customer = stripe.Customer.create(
       source=token,
       plan=plan,
       email=email
     )
+    subscription_id = customer.subscriptions.data[0].id
+    if hasattr(user, 'subscriptions'):
+        subscriptions = user.subscriptions
+    else:
+        subscriptions = OOBTree()
+        user.subscriptions = subscriptions
 
     username, password_hash = user.unconfirmed_db
+    user.subscriptions[username] = subscription_id
 
     with admin_db.transaction() as conn:
         admin = zerodb.permissions.base.get_admin(conn)
@@ -130,9 +138,11 @@ def confirm_subdb(request):
 
 @view_config(route_name='remove_subdb', renderer='json')
 def remove_subdb(request):
+    db = request.dbsession
     admin_db = request.admin_db
     username = request.matchdict['name']
     email = request.authenticated_userid
+    user = db[UserRegistration].query(email=email)[0]
 
     if (username != email) and (not username.startswith(email + '-')):
         raise HTTPNotFound('No such username: %s' % username)
@@ -140,5 +150,13 @@ def remove_subdb(request):
     with admin_db.transaction() as conn:
         admin = zerodb.permissions.base.get_admin(conn)
         admin.del_user(username)
+
+    # Do stripe stuff
+    if hasattr(user, "subscriptions") and (username in user.subscriptions):
+        subscription_id = user.subscriptions[username]
+        stripe.api_key = request.registry.settings['stripe.api_key']
+        subscription = stripe.Subscription.retrieve(subscription_id)
+        subscription.delete()
+        del user.subscriptions[username]
 
     return HTTPFound(request.route_url('home'))
