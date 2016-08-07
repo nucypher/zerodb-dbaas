@@ -51,6 +51,10 @@ def home(request):
         effective_principals=['group:customers'])
 def instance(request):
     username = request.matchdict['name']
+    email = request.authenticated_userid
+
+    if (username != email) and (not username.startswith(email + '-')):
+        raise HTTPNotFound('No such username: %s' % username)
 
     with request.admin_db.transaction() as conn:
         admin = conn.root()['admin']
@@ -126,6 +130,10 @@ def confirm_subdb(request):
 def remove_subdb(request):
     admin_db = request.admin_db
     username = request.matchdict['name']
+    email = request.authenticated_userid
+
+    if (username != email) and (not username.startswith(email + '-')):
+        raise HTTPNotFound('No such username: %s' % username)
 
     with admin_db.transaction() as conn:
         admin = zerodb.permissions.base.get_admin(conn)
