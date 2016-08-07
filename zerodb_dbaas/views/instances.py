@@ -1,5 +1,5 @@
 from pyramid.view import view_config
-from pyramid.httpexceptions import HTTPNotFound
+from pyramid.httpexceptions import HTTPNotFound, HTTPFound
 from zerodb_dbaas.views.common import humansize
 from zerodb_dbaas.models import UserRegistration
 import zerodb.permissions.base
@@ -104,7 +104,7 @@ def confirm_subdb(request):
     token = request.POST['stripeToken']
 
     # Create a Customer
-    customer = stripe.Customer.create(
+    stripe.Customer.create(
       source=token,
       plan="large",
       email=email
@@ -118,7 +118,7 @@ def confirm_subdb(request):
 
     user.unconfirmed_db = None
 
-    return {'ok': 1}
+    return HTTPFound(request.route_url('home'))
 
 
 @view_config(route_name='remove_subdb', renderer='json')
