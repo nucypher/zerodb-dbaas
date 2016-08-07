@@ -4,7 +4,7 @@
 	</title>
 
 	<metal:slot fill-slot="styles">
-		<link href="assets/css/cover.css" rel="stylesheet">
+		<link href="/assets/css/cover.css" rel="stylesheet">
         </metal:slot>
 
 

@@ -13,10 +13,10 @@
 
 		</title>
 
-		<link href="assets/css/toolkit-inverse.css" rel="stylesheet">
+		<link href="/assets/css/toolkit-inverse.css" rel="stylesheet">
 
 
-		<link href="assets/css/application.css" rel="stylesheet">
+		<link href="/assets/css/application.css" rel="stylesheet">
 
 		<style>
 /* note: this is a hack for ios iframe for bootstrap themes shopify page */
@@ -65,20 +65,20 @@ body {
 
 
 
-		<script src="assets/js/jquery.min.js"></script>
-		<script src="assets/js/chart.js"></script>
-		<script src="assets/js/tablesorter.min.js"></script>
-		<script src="assets/js/toolkit.js"></script>
-		<script src="assets/js/application.js"></script>
+		<script src="/assets/js/jquery.min.js"></script>
+		<script src="/assets/js/chart.js"></script>
+		<script src="/assets/js/tablesorter.min.js"></script>
+		<script src="/assets/js/toolkit.js"></script>
+		<script src="/assets/js/application.js"></script>
 		<script>
 // execute/clear BS loaders for docs
 $(function(){while(window.BS&&window.BS.loader&&window.BS.loader.length){(window.BS.loader.pop())()}})
 		</script>
         <metal:slot fill-slot="scripts">
-        <script src="assets/js/sjcl.js"></script>
-        <script src="assets/js/scrypt-async.min.js"></script>
-        <script src="assets/js/hashing.js"></script>
-        <script src="assets/js/registration.js"></script>
+        <script src="/assets/js/sjcl.js"></script>
+        <script src="/assets/js/scrypt-async.min.js"></script>
+        <script src="/assets/js/hashing.js"></script>
+        <script src="/assets/js/registration.js"></script>
         </metal:slot>
 	</body>
 </html>

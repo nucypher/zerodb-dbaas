@@ -41,10 +41,10 @@
 		</div>
 
         <metal:slot fill-slot="scripts">
-        <script src="assets/js/sjcl.js"></script>
-        <script src="assets/js/scrypt-async.min.js"></script>
-        <script src="assets/js/hashing.js"></script>
-        <script src="assets/js/registration.js"></script>
+        <script src="/assets/js/sjcl.js"></script>
+        <script src="/assets/js/scrypt-async.min.js"></script>
+        <script src="/assets/js/hashing.js"></script>
+        <script src="/assets/js/registration.js"></script>
         </metal:slot>
 
 </html>

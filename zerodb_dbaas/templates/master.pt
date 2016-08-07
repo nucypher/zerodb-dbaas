@@ -9,7 +9,7 @@
 		<meta name="keywords" content="">
 		<meta name="author" content="ZeroDB, Inc.">
 
-		<link rel="shortcut icon" href="assets/img/zerodb.png?">
+		<link rel="shortcut icon" href="/assets/img/zerodb.png?">
 
 		<title metal:define-slot="title">
 			Title goes here

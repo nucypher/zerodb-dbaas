@@ -94,7 +94,7 @@ tal:attributes="href string:instance/${db_id}">
 										    data-amount="2500"
 										    data-name="ZeroDB, Inc."
 										    data-description="small"
-										    data-image="assets/img/zerodb.svg"
+										    data-image="/assets/img/zerodb.svg"
 										    data-locale="auto"
 										    data-zip-code="true">
 										  </script>
@@ -117,7 +117,7 @@ tal:attributes="href string:instance/${db_id}">
 										    data-amount="4000"
 										    data-name="ZeroDB, Inc."
 										    data-description="medium"
-										    data-image="assets/img/zerodb.svg"
+										    data-image="/assets/img/zerodb.svg"
 										    data-locale="auto"
 										    data-zip-code="true">
 										  </script>
@@ -140,7 +140,7 @@ tal:attributes="href string:instance/${db_id}">
 										    data-amount="7000"
 										    data-name="ZeroDB, Inc."
 										    data-description="large"
-										    data-image="assets/img/zerodb.svg"
+										    data-image="/assets/img/zerodb.svg"
 										    data-locale="auto"
 										    data-zip-code="true">
 										  </script>
@@ -157,10 +157,10 @@ tal:attributes="href string:instance/${db_id}">
 	</metal:slot>
 
     <metal:slot fill-slot="scripts">
-    <script src="assets/js/sjcl.js"></script>
-    <script src="assets/js/scrypt-async.min.js"></script>
-    <script src="assets/js/hashing.js"></script>
-    <script src="assets/js/newinstance.js"></script>
+    <script src="/assets/js/sjcl.js"></script>
+    <script src="/assets/js/scrypt-async.min.js"></script>
+    <script src="/assets/js/hashing.js"></script>
+    <script src="/assets/js/newinstance.js"></script>
     </metal:slot>
 </body>
 </html>
