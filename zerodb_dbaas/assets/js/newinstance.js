@@ -12,9 +12,11 @@ $(document).ready(function() {
         }
 
         compute_hash(next_db_id, password, function(hash) {
-            $.get(url, {'next_db_id': next_db_id, 'password': hash})
-            .done(function(data) {
-                alert(data);
+            $.post(url, {'next_db_id': next_db_id, 'password': hash}, function(data) {
+                if (data.ok == 1) {
+                    $("#instanceModal").modal('hide');
+                    $("#stripeModal").modal('show');
+                }
             });
         });
 
