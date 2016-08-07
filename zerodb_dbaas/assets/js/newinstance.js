@@ -7,7 +7,7 @@ $(document).ready(function() {
         var password2 = $("#inputPasswordConfirmation").val();
 
         if ((password != password2) | (password2 == "") | (password == "")) {
-            alert("Passwords don't match");  // XXX should be a proper message
+            $("#validation-error-message").html("ValidationError: passwords don't match");
             return false;
         }
 

@@ -44,6 +44,9 @@ tal:attributes="href string:instance/${db_id}">
 					</div>
 					<div class="modal-body">
 						<form method="POST">
+							<div class="form-group" id="validation-error-message">
+								<span tal:condition="error|None">${error_type}: ${error}</span>
+							</div>
 							<div class="form-group">
 								<label for="inputPassword">Create unique instance password</label>
 								<input type="password" placeholder="Password" class="form-control" id="inputPassword" name="inputPassword">
