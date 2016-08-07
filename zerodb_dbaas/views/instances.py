@@ -22,7 +22,11 @@ def manage_databases(request):
             else:
                 break
 
-    return {'db_users': db_users}
+    db_ids = [i[len(email):].strip('-') for i in db_users]
+    next_db_id = max([int(i) for i in db_ids if i.isnumeric()] + [0]) + 1
+    next_db_id = '{0}-{1}'.format(email, next_db_id)
+
+    return {'db_users': db_users, 'next_db_id': next_db_id}
 
 
 @view_config(
@@ -68,11 +72,10 @@ def add_subdb(request):
     form = request.params
 
     email = request.authenticated_userid
-    instance_postfix = form.get('instance_postfix')
-    if instance_postfix:
-        username = '-'.join([email, instance_postfix])
-    else:
-        username = email
+    username = form.get('next_db_id')
+
+    if not username.startswith(email + '-') and not (username == email):
+        return {'ok': 0}
 
     password = form.get('password')
     password_hash = decode_password_hex(password)

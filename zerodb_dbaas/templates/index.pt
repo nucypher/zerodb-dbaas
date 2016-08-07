@@ -3,6 +3,7 @@
 		Overview
 	</title>
 
+<body>
 	<div metal:fill-slot="content" class="col-sm-9 content">
 		<div class="dashhead">
 			<div class="dashhead-titles">
@@ -52,7 +53,12 @@ tal:attributes="href string:instance/${db_id}">
 								<input type="password" placeholder="Password" class="form-control" id="inputPasswordConfirmation" name="inputPasswordConfirmation">
 							</div>
 							<div class="form-group">
-								<input type="submit" class="btn btn-default-outline" value=">>" data-dismiss="modal" data-toggle="modal" data-target="#stripeModal"/>
+                                <input type="hidden" value="${next_db_id}"
+                                id="next-db-id">
+								<input type="submit" class="btn
+                                btn-default-outline" value=">>"
+                                data-dismiss="modal" data-toggle="modal"
+                                data-target="#stripeModal" id="new-instance-pwd">
 							</div>
 						</form>
 					</div>
@@ -146,4 +152,12 @@ tal:attributes="href string:instance/${db_id}">
 			</div>
 		</div>
 	</metal:slot>
+
+    <metal:slot fill-slot="scripts">
+    <script src="assets/js/sjcl.js"></script>
+    <script src="assets/js/scrypt-async.min.js"></script>
+    <script src="assets/js/hashing.js"></script>
+    <script src="assets/js/newinstance.js"></script>
+    </metal:slot>
+</body>
 </html>
