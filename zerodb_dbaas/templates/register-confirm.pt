@@ -18,7 +18,7 @@
 							<div class="form-group" tal:condition="error|None">
 								${error_type}: ${error}
 							</div>
-							You may want to <a href="${request.route_url('register')}">try to sign up again</a>
+							You may want to <a href="${request.route_path('register')}">try to sign up again</a>
 			      </form>
 
 				</div>

@@ -6,7 +6,7 @@
 					<button class="nav-toggler nav-toggler-sm sidebar-toggler" type="button" data-toggle="collapse" data-target="#nav-toggleable-sm">
 						<span class="sr-only">Toggle nav</span>
 					</button>
-					<a class="sidebar-brand img-responsive" href="${ request.route_url('home') }">
+					<a class="sidebar-brand img-responsive" href="${ request.route_path('home') }">
 						<span class="icon icon-lock sidebar-brand-icon">ZeroDB</span>
 					</a>
 				</div>
@@ -15,16 +15,16 @@
 					<ul class="nav nav-pills nav-stacked">
 						<li tal:attributes="class 'active' if request.matched_route.name == 'home'
 											or request.matched_route.name == 'instance' else None">
-							<a href="${ request.route_url('home') }">Overview</a>
+							<a href="${ request.route_path('home') }">Overview</a>
 						</li>
 						<li tal:attributes="class 'active' if request.matched_route.name == 'documentation' else None">
-							<a href="${ request.route_url('documentation') }">Documentation</a>
+							<a href="${ request.route_path('documentation') }">Documentation</a>
 						</li>
 						<li tal:attributes="class 'active' if request.matched_route.name == 'billing-history' else None">
-							<a href="${ request.route_url('billing-history') }">Billing history</a>
+							<a href="${ request.route_path('billing-history') }">Billing history</a>
 						</li>
 						<li>
-							<a href="${ request.route_url('logout') }">Logout</a>
+							<a href="${ request.route_path('logout') }">Logout</a>
 						</li>
 					</ul>
 					<hr class="visible-xs m-t">
