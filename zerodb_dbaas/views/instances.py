@@ -3,6 +3,7 @@ from pyramid.httpexceptions import HTTPNotFound
 from zerodb_dbaas.views.common import humansize
 from zerodb_dbaas.models import UserRegistration
 import zerodb.permissions.base
+import stripe
 
 from .common import decode_password_hex, nohashing
 
@@ -92,6 +93,19 @@ def confirm_subdb(request):
     email = request.authenticated_userid
     user = db[UserRegistration].query(email=email)[0]
     # XXX call stripe and if it is all good...
+    # Set your secret key: remember to change this to your live secret key in production
+    # See your keys here https://dashboard.stripe.com/account/apikeys
+    stripe.api_key = "sk_test_qiEtoPFg1UktBLSSBNHxCc38"
+
+    # Get the credit card details submitted by the form
+    token = request.POST['stripeToken']
+
+    # Create a Customer
+    customer = stripe.Customer.create(
+      source=token,
+      plan="large",
+      email=email
+    )
 
     username, password_hash = user.unconfirmed_db
 

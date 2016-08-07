@@ -78,7 +78,7 @@ tal:attributes="href string:instance/${db_id}">
 											$25
 										</h2>
 										<span class="statcard-desc">per month</span>
-										<form action="/create_2gb_instance" method="POST" data-dismiss="modal">
+										<form action="${ request.route_url('confirm_subdb') }" method="POST">
 										  <script
 										    src="https://checkout.stripe.com/checkout.js" class="stripe-button"
 										    data-key="pk_test_a5PvmhImTHCrmhz852eOWS6l"
@@ -101,7 +101,7 @@ tal:attributes="href string:instance/${db_id}">
 											$40
 										</h2>
 										<span class="statcard-desc">per month</span>
-										<form action="/create_4gb_instance" method="POST" data-dismiss="modal">
+										<form action="${ request.route_url('confirm_subdb') }" method="POST">
 										  <script
 										    src="https://checkout.stripe.com/checkout.js" class="stripe-button"
 										    data-key="pk_test_a5PvmhImTHCrmhz852eOWS6l"
@@ -124,7 +124,7 @@ tal:attributes="href string:instance/${db_id}">
 											$70
 										</h2>
 										<span class="statcard-desc">per month</span>
-										<form action="/create_8gb_instance" method="POST" data-dismiss="modal">
+										<form action="${ request.route_url('confirm_subdb') }" method="POST">
 										  <script
 										    src="https://checkout.stripe.com/checkout.js" class="stripe-button"
 										    data-key="pk_test_a5PvmhImTHCrmhz852eOWS6l"

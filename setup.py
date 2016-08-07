@@ -18,6 +18,7 @@ requires = [
     'zerodb==0.99.0a3',
     'waitress',
     'six',
+    'stripe'
     ]
 
 tests_require = [
