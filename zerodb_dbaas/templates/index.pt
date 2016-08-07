@@ -90,7 +90,7 @@ tal:attributes="href string:instance/${db_id}">
 										<form action="${ request.route_url('confirm_subdb', plan='small') }" method="POST">
 										  <script
 										    src="https://checkout.stripe.com/checkout.js" class="stripe-button"
-										    data-key="pk_test_a5PvmhImTHCrmhz852eOWS6l"
+										    data-key="${stripe_pk}"
 										    data-amount="2500"
 										    data-name="ZeroDB, Inc."
 										    data-description="small"
@@ -113,7 +113,7 @@ tal:attributes="href string:instance/${db_id}">
 										<form action="${ request.route_url('confirm_subdb', plan='medium') }" method="POST">
 										  <script
 										    src="https://checkout.stripe.com/checkout.js" class="stripe-button"
-										    data-key="pk_test_a5PvmhImTHCrmhz852eOWS6l"
+										    data-key="${stripe_pk}"
 										    data-amount="4000"
 										    data-name="ZeroDB, Inc."
 										    data-description="medium"
@@ -136,7 +136,7 @@ tal:attributes="href string:instance/${db_id}">
 										<form action="${ request.route_url('confirm_subdb', plan='large') }" method="POST">
 										  <script
 										    src="https://checkout.stripe.com/checkout.js" class="stripe-button"
-										    data-key="pk_test_a5PvmhImTHCrmhz852eOWS6l"
+										    data-key="${stripe_pk}"
 										    data-amount="7000"
 										    data-name="ZeroDB, Inc."
 										    data-description="large"

@@ -26,7 +26,9 @@ def manage_databases(request):
     next_db_id = max([int(i) for i in db_ids if i.isnumeric()] + [0]) + 1
     next_db_id = '{0}-{1}'.format(email, next_db_id)
 
-    return {'db_users': db_users, 'next_db_id': next_db_id}
+    return {'db_users': db_users,
+            'next_db_id': next_db_id,
+            'stripe_pk': request.registry.settings['stripe.stripe_pk']}
 
 
 @view_config(
