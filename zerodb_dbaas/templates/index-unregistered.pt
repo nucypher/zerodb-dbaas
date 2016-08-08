@@ -40,6 +40,7 @@
 	      <p class="lead">Contribute on <a href="https://github.com/zerodb/zerodb"><span class="icon icon-github"></span> GitHub</a>.</p>
               <p class="lead">Join the community on <a href="http://slack.zerodb.com/"><span class="icon icon-users"></span> Slack</a>.</p>
               <p class="lead">Read the white paper on <a href="https://arxiv.org/abs/1602.07168"><span class="icon icon-open-book"></span> arXiv</a>.</p>
+	      <p class="lead">Check the <a href="${request.route_path('documentation')}"><span class="icon icon-text-document"></span> docs</a>.</p>
             </div>
 
         </div>
