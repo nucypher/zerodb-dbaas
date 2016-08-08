@@ -55,6 +55,8 @@ def home(request):
 def instance(request):
     username = request.matchdict['name']
     email = request.authenticated_userid
+    db = request.dbsession
+    user = db[UserRegistration].query(email=email)[0]
 
     if (username != email) and (not username.startswith(email + '-')):
         raise HTTPNotFound('No such username: %s' % username)
@@ -69,7 +71,19 @@ def instance(request):
             if username in admin.user_stats:
                 size = admin.user_stats[username]
 
-    return {'username': username, 'size': humansize(size)}
+
+        size_dict = {'small': 2, 'medium': 4, 'large': 8}
+        max_size = 2
+        bill = 0
+        if hasattr(user, "subscriptions") and (username in user.subscriptions):
+            subscription_id = user.subscriptions[username]
+            stripe.api_key = request.registry.settings['stripe.api_key']
+            subscription = stripe.Subscription.retrieve(subscription_id)
+            max_size = size_dict[subscription.plan.name]
+            bill = subscription.plan.amount / 100
+
+
+    return {'username': username, 'size': humansize(size), 'bill': bill, 'maxSize': max_size}
 
 
 @view_config(route_name='add_subdb', renderer='json',

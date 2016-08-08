@@ -27,11 +27,11 @@
 			<a class="list-group-item">
 				<span>Connection: Available</span>
 			</a>
-            <a class="list-group-item">
-                <span>Usage: ${size} of 2 GB</span>
-            </a>
 			<a class="list-group-item">
-				<span>Billing: $25.00 per month</span>
+				<span>Usage: ${size} of ${maxSize} GB</span>
+			</a>
+			<a class="list-group-item">
+				<span>Billing: $${bill} per month</span>
 			</a>
 			<a class="list-group-item">
 				<span>Storage Volume: SSD</span>

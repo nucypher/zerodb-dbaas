@@ -26,7 +26,6 @@
 			<a class="list-group-item"
 tal:repeat="db_id db_users"
 tal:attributes="href string:instance/${db_id}">
-				<span class="pull-right text-muted">2GB</span>
                 <span class="icon icon-check"> Instance ${db_id}
 			</a>
 		</div>
