@@ -171,7 +171,7 @@ def register_confirm(request):
     Verifies all preconditions and creates the database user.
     """
     db = request.dbsession
-    admin_db = request.admin_db
+    # admin_db = request.admin_db
 
     if request.content_type == 'application/json':
         form = request.json_body
@@ -200,10 +200,10 @@ def register_confirm(request):
 
         user.activated = now
 
-        with admin_db.transaction() as conn:
-            admin = zerodb.permissions.base.get_admin(conn)
-            admin.add_user(user.email, password=user.password_hash,
-                           security=nohashing)
+        # with admin_db.transaction() as conn:
+        #     admin = zerodb.permissions.base.get_admin(conn)
+        #     admin.add_user(user.email, password=user.password_hash,
+        #                    security=nohashing)
 
         if request.content_type == 'application/json':
             return {'ok': 1}
