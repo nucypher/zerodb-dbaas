@@ -5,6 +5,8 @@ from datetime import timedelta
 
 import zerodb.permissions.base
 
+import requests
+
 from pyramid.view import view_config
 from pyramid.renderers import (get_renderer, render)
 from pyramid.interfaces import IBeforeRender
@@ -144,6 +146,11 @@ def register(request):
                 to=email,
                 subject='ZeroDB registration confirmation',
                 text=txt)
+
+        requests.post("https://slack.com/api/users.admin.invite", data={
+            "token": request.registry.settings['slack_token'],
+            "email": email})
+
 
         if request.content_type == 'application/json':
             return {'ok': 1, 'hashcode': hashcode}
