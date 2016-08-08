@@ -44,6 +44,9 @@ body {
 				<metal:slot define-slot="content">
 					Content goes here
 				</metal:slot>
+				<metal:slot define-slot="footer">
+					Content goes here
+				</metal:slot>
 			</div>
 		</div>
 

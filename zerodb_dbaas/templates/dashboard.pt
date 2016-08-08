@@ -20,8 +20,11 @@
 						<li tal:attributes="class 'active' if request.matched_route.name == 'documentation' else None">
 							<a href="${ request.route_path('documentation') }">Documentation</a>
 						</li>
-						<li tal:attributes="class 'active' if request.matched_route.name == 'billing-history' else None">
-							<a href="${ request.route_path('billing-history') }">Billing history</a>
+						<li>
+							<a href="https://github.com/zerodb/zerodb" target="_blank">GitHub repo</a>
+						</li>
+						<li>
+							<a href="https://zerodb.slack.com/" target="_blank">Support</a>
 						</li>
 						<li>
 							<a href="${ request.route_path('logout') }">Logout</a>
@@ -34,6 +37,10 @@
 		<metal:slot define-slot="content">
 			Content goes here
 		</metal:slot>
+		<div metal:fill-slot="footer" class="col-sm-9 content">
+			<ul class="nav nav-stacked">
+			</ul>
+		</div>
 	</div>
 
 	<metal:slot define-slot="extra">
